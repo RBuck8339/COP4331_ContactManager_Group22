@@ -1,0 +1,156 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#loginPage {
+    display: flex;
+    height: 100vh;
+    background: linear-gradient(180deg, #2c3e50, #34495e, #1abc9c);
+}
+
+.loginBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 32%;
+    height: 75%;
+    margin: auto;
+    padding-top: 25px;
+    background-color: gray;
+    border: 3px solid black;
+    border-radius: 35px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.hidden {
+    display: none;
+}
+
+#menuButtons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+#menuButtons button {
+    padding: 10px 20px;
+    border: 1px solid black;
+    background-color: silver;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#menuButtons button:hover {
+    background-color: cyan;
+    color: white;
+}
+
+#menuButtons button.activePage {
+    background-color: teal;
+    color: white;
+}
+
+#welcomeMsg {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#welcomeTitle {
+    color: var(--accent-color);
+    font-size: 32px;
+    margin-bottom: 5px;
+}
+
+#welcomeDesc {
+    color: var(--secondary-text-color);
+    font-size: 18px;
+}
+
+#menuName {
+    font-size: 20px;
+    text-decoration: underline;
+    align-self: center;
+}
+
+#inputs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    /*Remove after verifying it looks good*/
+}
+
+#inputs input {
+    padding: 10px;
+    margin: 5%;
+    font-size: 16px;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+}
+
+#inputs input:focus {
+    border-color: #3498db;
+    outline: none;
+}
+
+#inputs button {
+    background-color: cyan;
+    width: 25%;
+    padding: 10px;
+    font-size: 14px;
+    color: white;
+    margin-top: 5px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#inputs button:hover {
+    transition: teal 0.3s ease;
+}
+
+#loginResult {
+    display: inline-block;
+    font-size: 0.8em;
+    width: 90%;
+    text-align: center;
+    margin-left: 5%;
+    margin-bottom: 2%;
+    font-family: 'Ubuntu', sans-serif;
+    color: #95060a;
+}
+
+#passRequirements ul {
+    list-style-type: circle;
+    /*Can replace with a special symbol if we want*/
+    margin-bottom: 10px;
+}
+
+#passRequirements li {
+    margin-left: 5px;
+    font-size: 12px;
+}
+
+#videoBox {
+    display: flex;
+    width: 55%;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    background-color: black;
+}
+
+#demoVideo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
