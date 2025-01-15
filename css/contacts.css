@@ -1,0 +1,81 @@
+/* Remove default margins from document */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--background-color); /* Need to define */
+}
+
+#navbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 5rem;
+    border-bottom: 3px solid black;
+    color: var(--text-color);
+    box-sizing: border-box;
+}
+
+#navTitle {
+    font-size: 4rem;
+    margin: 0;
+    line-height: 5rem;
+}
+
+#navButtons {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    height: 100%;
+}
+
+#navButtons button {
+    height: 100%;
+    background-color: gray;
+    border: none;
+    border-left: 2px solid black;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+}
+
+#navButtons button:hover {
+    background-color: var(--accent-color);
+}
+
+#contacts {
+    margin: 4rem 5%;
+}
+
+#contactsData { 
+    width: 100%;
+    border: 1px solid black;
+    padding: 0;
+}
+
+#contactsData thead th {
+    background-color: gray;
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    border: 2px solid black;
+}
+
+#contactsData tbody tr {
+    background-color: beige;
+    margin: 0;
+    padding: 0;
+}
+
+#contactsData tbody tr:nth-child(even) {
+    background-color: bisque;
+    margin: 0;
+}
+
+#contactsData tbody td {
+    padding: 4px 8px;
+    margin: 0;
+}
