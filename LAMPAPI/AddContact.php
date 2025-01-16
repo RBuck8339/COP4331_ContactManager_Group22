@@ -1,10 +1,10 @@
 <?php
 	$inData = getRequestInfo();
 
-  $firstName = $inData["firstName"];
-  $lastName = $inData["lastName"];
-  $phone = $inData["phone"];
-  $email = $inData["email"];
+  	$firstName = $inData["firstName"];
+ 	$lastName = $inData["lastName"];
+ 	$phone = $inData["phone"];
+  	$email = $inData["email"];
 	$userId = $inData["userId"];
 
 	$conn = new mysqli("localhost", "root", "Group22Rules", "COP4331");
