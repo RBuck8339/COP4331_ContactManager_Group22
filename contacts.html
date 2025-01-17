@@ -1,0 +1,46 @@
+<html>
+
+<head>
+    <title>COP 4331 LAMP Stack Demo</title>
+    <script type="text/javascript" src="js/md5.js" defer></script>
+    <script type="text/javascript" src="js/code.js" defer></script>
+    <script type="text/javascript" src="js/contacts.js" defer></script>
+    <script type="text/javascript" src="js/navigation.js" defer></script>
+    <link href="css/contacts.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="navbar">
+        <p id="navTitle">Contact Manager</p>
+        <div id="navButtons">
+            <button type="button" id="dashboardBtn" class="buttons">Dashboard</button>
+            <button type="button" id="contactsBtn" class="buttons">Contacts</button>
+            <button type="button" id="groupsBtn" class="buttons">Groups</button>
+            <button type="button" id="settingsBtn" class="buttons">Settings</button>
+            <button type="button" id="helpBtn" class="buttons">Help</button>
+        </div>
+    </div>
+
+    <div id="contacts">
+        <table id="contactsTable">
+            <thead>
+                <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody id="contactsData">
+                <!-- Dynamically add rows using JS + SQL -->
+            </tbody>
+        </table>
+    </div>
+
+</body>
+
+</html>

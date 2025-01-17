@@ -1,11 +1,12 @@
 /* Remove default margins from document */
+
 html,
 body {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--background-color); /* Need to define */
+    background-color: var(--background-color);
 }
 
 #navbar {
@@ -20,10 +21,12 @@ body {
     box-sizing: border-box;
 }
 
-#navTitle {
+#navbar p {
     font-size: 4rem;
     margin: 0;
     line-height: 5rem;
+    align-items: center;
+    justify-self: center;
 }
 
 #navButtons {
@@ -47,35 +50,58 @@ body {
 }
 
 #contacts {
-    margin: 4rem 5%;
-}
-
-#contactsData { 
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: green;
     border: 1px solid black;
-    padding: 0;
+    border-radius: 15px;
+    margin: 4rem 5%;
+    overflow: hidden;
 }
 
-#contactsData thead th {
+#contactsTable {
+    width: 100%;
+    padding: 3%;
+    border-collapse: collapse;
+}
+
+#contactsTable thead th {
     background-color: gray;
     color: var(--text-color);
     margin: 0;
     padding: 0;
     border: 2px solid black;
+    text-align: center;
 }
 
-#contactsData tbody tr {
+#contactsTable tbody tr {
     background-color: beige;
     margin: 0;
     padding: 0;
 }
 
-#contactsData tbody tr:nth-child(even) {
+#contactsTable tbody tr:nth-child(even) {
     background-color: bisque;
     margin: 0;
 }
 
-#contactsData tbody td {
+#contactsTable tbody td {
     padding: 4px 8px;
     margin: 0;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#contactsTable tbody td ul {
+    list-style-position: inside;
+    /* Optional: Keeps bullets inside the cell */
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    /* Centers the text of the list items */
+}
+
+#contactsTable tbody td ul li {
+    display: inline-block;
+    text-align: center;
 }
