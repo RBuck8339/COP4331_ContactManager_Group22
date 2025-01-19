@@ -1,15 +1,13 @@
-/* Remove default margins from document */
-
 html,
 body {
     margin: 0;
     padding: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--background-color);
+    background: linear-gradient(180deg, #2c3e50, #34495e, #1abc9c);
 }
 
-#navbar {
+#header {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -19,9 +17,23 @@ body {
     border-bottom: 3px solid black;
     color: var(--text-color);
     box-sizing: border-box;
+    background-color: cadetblue;
 }
 
-#navbar p {
+#logoImg {
+    margin-left: 0;
+    height: auto;
+    width: auto;
+    max-height: 100%;
+    max-width: 100%;
+}
+
+#searchBar {
+    border: 1px solid black;
+    border-radius: 3px;
+}
+
+#headerTitle {
     font-size: 4rem;
     margin: 0;
     line-height: 5rem;
@@ -59,8 +71,58 @@ body {
     overflow: hidden;
 }
 
+#utils {
+    display: flex;
+    flex-direction: row;
+    margin-left: auto;
+}
+
+#utils button {
+    border: 1px solid black;
+    border-radius: 100%;
+    height: 3rem;
+    width: 3rem;
+    cursor: pointer;
+}
+
+#btnImg {
+    max-width: 120%;
+    max-height: 120%;
+}
+
+#searchBox {
+    position: relative;
+    display: inline-block;
+    width: 30%;
+}
+
+#searchBar {
+    width: 100%;
+    padding-right: 30px;
+    height: 2.5rem;
+    font-size: 1rem;
+    padding-left: 10px;
+}
+
+#searchBox img {
+    position: absolute;
+    top: 50%;
+    /* Center the icon vertically within the input */
+    right: 10px;
+    /* Adjust the right position to be within the input */
+    transform: translateY(-50%);
+    /* Fine-tune the vertical alignment */
+    height: 20px;
+    /* Set the desired icon size */
+    width: 20px;
+    /* Set the desired icon size */
+    pointer-events: none;
+    /* Ensures the icon does not interfere with input interaction */
+}
+
 #contactsTable {
     width: 100%;
+    margin: 3%;
     padding: 3%;
     border-collapse: collapse;
 }
@@ -86,7 +148,7 @@ body {
 }
 
 #contactsTable tbody td {
-    padding: 4px 8px;
+    padding: 4px 6px;
     margin: 0;
     text-align: center;
     vertical-align: middle;
@@ -104,4 +166,76 @@ body {
 #contactsTable tbody td ul li {
     display: inline-block;
     text-align: center;
+}
+
+
+/* Add contact form styling */
+
+#addContactModel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.hidden {
+    display: none;
+}
+
+#modal {
+    position: relative;
+    background: gray;
+    padding: 25px 15px;
+    border-radius: 12px;
+    width: 50%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+}
+
+#closeModal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    font-weight: bold;
+    color: #c0c0c0;
+    cursor: pointer;
+}
+
+#closeModal:hover {
+    color: #650202
+}
+
+form label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+form input {
+    width: 100%;
+    padding: 10px;
+    margin: 0 3%;
+    margin-bottom: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+form button {
+    padding: 10px 20px;
+    border: 1px solid black;
+    background-color: silver;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+form button:hover {
+    background-color: cyan;
 }

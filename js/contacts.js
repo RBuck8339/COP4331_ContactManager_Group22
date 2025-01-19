@@ -1,4 +1,33 @@
 const contacts_data = document.getElementById('contactsData');
+const addContactWindow = document.getElementById('addContactModal');
+const addContactBtn = document.getElementById('addContactBtn');
+const closeModalBtn = document.getElementById('closeModal');
+const addContactForm = document.getElementById('addContactForm');
+
+// Each of the below changes the current screen based on button press
+document.getElementById('settingsBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    window.location.href = 'settings.html';
+});
+document.getElementById('logoutBtn').addEventListener('click', (e) => {
+    e.preventDefault();
+    window.location.href = 'logout.html'; 
+});
+
+// Allows for showing and hiding the add contact window
+addContactBtn.addEventListener('click', () => {
+    addContactWindow.classList.remove('hidden');
+});
+closeModalBtn.addEventListener('click', () => {
+    addContactWindow.classList.add('hidden');
+});
+// If the user clicks off the add user screen
+addContactWindow.addEventListener('click', (e) => {
+    if(e.target === addContactWindow){
+        addContactWindow.classList.add('hidden');
+    }
+});
+
 
 
 // Get all contacts from the php endpoint
@@ -47,6 +76,8 @@ function getContacts(){
         },
     ]; // Need to change to actually receive real data
 
+    contacts_data.innerHTML = '';  // Clear out the table before adding
+
     contacts.forEach(contact => {
         const row = document.createElement('tr');
 
@@ -73,6 +104,15 @@ function getContacts(){
         contacts_data.appendChild(row);
     });
 }
+
+addContactForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // Logic for processing new user
+
+    addContactWindow.classList.add('hidden');
+    getContacts();  // Update contacts list
+});
 
 // Makes sure it executes after loading
 document.addEventListener('DOMContentLoaded', () => {
