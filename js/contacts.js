@@ -16,9 +16,11 @@ document.getElementById('logoutBtn').addEventListener('click', (e) => {
 
 // Allows for showing and hiding the add contact window
 addContactBtn.addEventListener('click', () => {
+    console.log("Opening");
     addContactWindow.classList.remove('hidden');
 });
 closeModalBtn.addEventListener('click', () => {
+    console.log("Closing")
     addContactWindow.classList.add('hidden');
 });
 // If the user clicks off the add user screen
@@ -40,7 +42,7 @@ function getContacts(){
             Phone: '(239)555-5555',
             Email: 'johndoe@gmail.com',
             Address: '1234 E.S. St',
-            Notes: ['a', 'b', 'c']
+            //Notes: ['a', 'b', 'c']
         },
         {
             FirstName: 'John',
@@ -48,7 +50,7 @@ function getContacts(){
             Phone: '(239)555-5555',
             Email: 'johndoe@gmail.com',
             Address: '1234 E.S. St',
-            Notes: ['a', 'b', 'c']
+            //Notes: ['a', 'b', 'c']
         },
         {
             FirstName: 'John',
@@ -56,7 +58,7 @@ function getContacts(){
             Phone: '(239)555-5555',
             Email: 'johndoe@gmail.com',
             Address: '1234 E.S. St',
-            Notes: ['a', 'b', 'c']
+            //Notes: ['a', 'b', 'c']
         },
         {
             FirstName: 'John',
@@ -64,7 +66,7 @@ function getContacts(){
             Phone: '(239)555-5555',
             Email: 'johndoe@gmail.com',
             Address: '1234 E.S. St',
-            Notes: ['a', 'b', 'c']
+            //Notes: ['a', 'b', 'c']
         },
         {
             FirstName: 'John',
@@ -72,7 +74,7 @@ function getContacts(){
             Phone: '(239)555-5555',
             Email: 'johndoe@gmail.com',
             Address: '1234 E.S. St',
-            Notes: ['a', 'b', 'c']
+            //Notes: ['a', 'b', 'c']
         },
     ]; // Need to change to actually receive real data
 

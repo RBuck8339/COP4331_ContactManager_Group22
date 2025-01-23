@@ -16,19 +16,19 @@
         <p id="headerTitle">Contact Manager</p>
         <div id="navButtons">
             <button type="button" id="settingsBtn" class="buttons">Settings</button>
-            <button type="button" id="logoutBtn" class="buttons">Help</button>
+            <button type="button" id="logoutBtn" class="buttons">Logout</button>
         </div>
     </div>
 
     <div id="contacts">
         <div id="utils">
             <button id="addContactBtn">
-                <img id="btnImg" src="assets/images/add_contact_1.png" alt="Add User" class="button-icon">
+                <img id="btnImg" src="assets/images/add_contact_2.png" alt="Add User" class="button-icon">
             </button>
             <button id="removeContactBtn">
-                <img id="btnImg" src="assets/images/remove_contact_1.png" alt="Remove User" class="button-icon">
+                <img id="btnImg" src="assets/images/edit_user.png" alt="Edit Users" class="button-icon">
             </button>
-            <div class="searchBox">
+            <div id="searchBox">
                 <input type="text" id="searchBar" placeholder="Search...">
                 <img id="searchImg" src="assets/images/search.png" alt="Search Img" class="search-icon">
             </div>
@@ -43,7 +43,8 @@
                     <th>Phone</th>
                     <th>Email</th>
                     <th>Address</th>
-                    <th>Notes</th>
+                    <!--<th>Notes</th>  Removed for now -->
+                    <th id="actionColumn" class="hidden">Action</th>
                 </tr>
             </thead>
             <tbody id="contactsData">
@@ -53,9 +54,9 @@
     </div>
 
     <div id="addContactModal" class="hidden">
-        <div class="modal">
+        <div id="addContactWindow">
             <button id="closeModal">&times;</button>
-            <h2>Add New Contact</h2>
+            <h2 id="modalHeader">Add New Contact</h2>
             <form id="addContactForm">
                 <label for="firstName">First Name:</label>
                 <input type="text" id="firstName" name="firstName" required>

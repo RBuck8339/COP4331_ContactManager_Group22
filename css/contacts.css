@@ -28,11 +28,6 @@ body {
     max-width: 100%;
 }
 
-#searchBar {
-    border: 1px solid black;
-    border-radius: 3px;
-}
-
 #headerTitle {
     font-size: 4rem;
     margin: 0;
@@ -64,8 +59,9 @@ body {
 #contacts {
     display: flex;
     flex-direction: column;
-    background-color: green;
-    border: 1px solid black;
+    min-height: 70%;
+    background-color: #f1c27d;
+    border: 3px solid white;
     border-radius: 15px;
     margin: 4rem 5%;
     overflow: hidden;
@@ -74,7 +70,11 @@ body {
 #utils {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    margin: 0.25% 0%;
+    margin-top: 0.5rem;
     margin-left: auto;
+    margin-right: 10px;
 }
 
 #utils button {
@@ -82,6 +82,8 @@ body {
     border-radius: 100%;
     height: 3rem;
     width: 3rem;
+    margin-right: 1%;
+    margin-left: none;
     cursor: pointer;
 }
 
@@ -92,8 +94,9 @@ body {
 
 #searchBox {
     position: relative;
-    display: inline-block;
-    width: 30%;
+    display: flex;
+    width: 100%;
+    align-items: center;
 }
 
 #searchBar {
@@ -101,30 +104,29 @@ body {
     padding-right: 30px;
     height: 2.5rem;
     font-size: 1rem;
-    padding-left: 10px;
+    padding-left: 8px;
+    border: 2px solid black;
+    border-radius: 5px;
 }
 
-#searchBox img {
+#searchImg {
     position: absolute;
-    top: 50%;
-    /* Center the icon vertically within the input */
     right: 10px;
-    /* Adjust the right position to be within the input */
-    transform: translateY(-50%);
-    /* Fine-tune the vertical alignment */
     height: 20px;
-    /* Set the desired icon size */
     width: 20px;
-    /* Set the desired icon size */
     pointer-events: none;
-    /* Ensures the icon does not interfere with input interaction */
 }
 
 #contactsTable {
-    width: 100%;
-    margin: 3%;
-    padding: 3%;
+    width: 98%;
+    margin: 0% 1%;
+    margin-top: 0.5rem;
+    margin-bottom: 1%;
+    padding: 1%;
     border-collapse: collapse;
+    overflow: hidden;
+    border: 3px solid white;
+    border-radius: 7px;
 }
 
 #contactsTable thead th {
@@ -132,8 +134,8 @@ body {
     color: var(--text-color);
     margin: 0;
     padding: 0;
-    border: 2px solid black;
     text-align: center;
+    border-bottom: 2px solid black;
 }
 
 #contactsTable tbody tr {
@@ -148,7 +150,7 @@ body {
 }
 
 #contactsTable tbody td {
-    padding: 4px 6px;
+    padding: 3px 5px;
     margin: 0;
     text-align: center;
     vertical-align: middle;
@@ -171,7 +173,7 @@ body {
 
 /* Add contact form styling */
 
-#addContactModel {
+#addContactModal {
     position: fixed;
     top: 0;
     left: 0;
@@ -181,20 +183,30 @@ body {
     z-index: 1000;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.75);
+    text-decoration: underline;
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
-#modal {
+#addContactWindow {
+    justify-content: center;
+    align-items: center;
     position: relative;
-    background: gray;
+    background-color: #f1c27d;
     padding: 25px 15px;
+    border: 3px solid white;
     border-radius: 12px;
-    width: 50%;
+    width: 45%;
+    max-width: 600px;
+    text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+}
+
+#modalHeader {
+    font-size: 32px;
 }
 
 #closeModal {
@@ -213,29 +225,47 @@ body {
     color: #650202
 }
 
+form {
+    width: 100%;
+    background-color: #e1a346;
+    border: 1px solid white;
+    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
 form label {
+    padding-left: 20px;
     display: block;
     margin: 10px 0 5px;
+    margin-top: 15px;
+    text-align: left;
 }
 
 form input {
-    width: 100%;
+    width: calc(100% - 20px);
     padding: 10px;
-    margin: 0 3%;
+    margin-left: 10px;
     margin-bottom: 10px;
     border: 1px solid black;
     border-radius: 5px;
+    align-self: center;
 }
 
 form button {
+    align-self: center;
+    background-color: #4eabf8;
     padding: 10px 20px;
     border: 1px solid black;
     background-color: silver;
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    margin-top: 15px;
+    margin-bottom: 25px;
 }
 
 form button:hover {
-    background-color: cyan;
+    background-color: #69f5fe;
 }
