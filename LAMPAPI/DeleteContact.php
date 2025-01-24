@@ -1,7 +1,7 @@
 <?php
 	$inData = getRequestInfo();
 
-	$userId = $inData["userId"]; // fetch userId from database
+	$userId = $inData["contactid"]; // fetch userId from database
 
     // Connect to database, handle error if fails
 	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331","contact_manager");
@@ -12,8 +12,8 @@
 	else
 	{   
         // Delete user from database w/ their UserID
-		$stmt = $conn->prepare("DELETE FROM Contacts WHERE UserID=?");
-		$stmt->bind_param("i", $userId);
+		$stmt = $conn->prepare("DELETE FROM Contacts WHERE ID=?");
+		$stmt->bind_param("i", $contactid);
 		$stmt->execute();
 		$stmt->close();
 		$conn->close();

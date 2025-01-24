@@ -52,7 +52,7 @@ paths:                     # Contains all API endpoints
                     type: string        # Data type for `error` (string)
                     example: Invalid request body or missing fields. # Example error
 
-  /Register.php:            # Defines the registration endpoint
+  /AddUser.php:            # Defines the registration endpoint
     post:                  # HTTP POST method
       summary: Register a new user  # Description of the operation
       requestBody:               # Describes what the client must send in the request
