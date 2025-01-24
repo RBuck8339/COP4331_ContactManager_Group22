@@ -7,7 +7,7 @@
 	$firstName = "";
 	$lastName = "";
 
-	$conn = new mysqli("localhost", "root", "Group22Rules", "COP4331");	
+	$conn = new mysqli("localhost", "root", "Group22Rules", "contact_manager");
 	if( $conn->connect_error )
 	{
 		returnWithError( $conn->connect_error );
