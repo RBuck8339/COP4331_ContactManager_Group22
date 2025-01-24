@@ -1,6 +1,11 @@
 <?php
 	$inData = getRequestInfo();
 
+	$firstName = $inData["firstName"];
+ 	$lastName = $inData["lastName"];
+ 	$phone = $inData["phone"];
+  	$email = $inData["email"];
+	$userId = $inData["userId"];
 	$userId = $inData["contactid"]; // fetch userId from database
 
     // Connect to database, handle error if fails
