@@ -227,18 +227,6 @@ body {
     color: #650202
 }
 
-#addContactForm{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.input-box{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
-
 form {
     width: 100%;
     background-color: #e1a346;
@@ -250,8 +238,9 @@ form {
 }
 
 form label {
+    padding-left: 20px;
     display: block;
-    margin: 10px 12px;
+    margin: 10px 0 5px;
     margin-top: 15px;
     text-align: left;
 }
@@ -259,6 +248,7 @@ form label {
 form input {
     width: calc(100% - 20px);
     padding: 10px;
+    margin-left: 10px;
     margin-bottom: 10px;
     border: 1px solid black;
     border-radius: 5px;
@@ -282,16 +272,11 @@ form button:hover {
     background-color: #69f5fe;
 }
 
-.error{
-    align-self: flex-start;
-    margin: 0px 12px;
-    margin-bottom: 10px;
-}
-
-.border-red {
-    border: 3px solid red;
-}
-
-.border-green {
-    border: 3px solid green;
+#buttonContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    margin-top: 15px;
+    margin-bottom: 25px;
+    align-self: center;
 }

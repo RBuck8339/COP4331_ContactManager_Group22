@@ -44,25 +44,10 @@ editContactBtn.addEventListener('click', (e) => {
 
 
 
-// INPUT VALIDITY
-
-emailInput.addEventListener("blur", (event) => {
-    const email = event.target.value; // Get the input value from the event
-
-    // Regular Expression to validate emails
-    const regex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
-
-    if (regex.test(email)) {
-        document.getElementById('errorMsgEmail').classList.add("hidden"); // Valid
-        emailInput.classList.remove("border-red");
-        emailInput.classList.add("border-green"); // Add green outline
-    } else {
-        document.getElementById('errorMsgEmail').classList.remove("hidden"); // Invalid
-        emailInput.classList.remove("border-green");
-        emailInput.classList.add("border-red"); // Add red outline
-    }
-});
-
+function verifyEmail(email){
+    // Regex
+    return True;
+}
 
 function verifyPhone(phone){
     // Regex
