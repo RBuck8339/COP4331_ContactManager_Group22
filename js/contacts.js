@@ -60,6 +60,7 @@ emailInput.addEventListener("blur", (event) => {
         emailInput.classList.remove("border-green");
         emailInput.classList.add("border-red"); // Add red outline
     }
+});
 
 function verifyPhone(phone){
     // Regex
