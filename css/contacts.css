@@ -280,3 +280,17 @@ form button:hover {
     margin-bottom: 25px;
     align-self: center;
 }
+
+.error {
+    align-self: flex-start;
+    margin: 0px 12px;
+    margin-bottom: 10px;
+}
+
+.border-red {
+    border: 3px solid red;
+}
+
+.border-green {
+    border: 3px solid green;
+}
