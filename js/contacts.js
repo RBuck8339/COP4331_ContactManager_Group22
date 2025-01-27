@@ -1,8 +1,17 @@
 const contacts_data = document.getElementById('contactsData');
 const addContactWindow = document.getElementById('addContactModal');
 const addContactBtn = document.getElementById('addContactBtn');
+const editContactBtn = document.getElementById('editContactBtn');
 const closeModalBtn = document.getElementById('closeModal');
 const addContactForm = document.getElementById('addContactForm');
+
+// Contact form elements
+const firstNameInput = document.getElementById('firstName');
+const lastNameInput = document.getElementById('lastName');
+const phoneInput = document.getElementById('phone');
+const emailInput = document.getElementById('email');
+const addressInput = document.getElementById('address');
+
 
 // Each of the below changes the current screen based on button press
 document.getElementById('settingsBtn').addEventListener('click', (e) => {
@@ -16,11 +25,9 @@ document.getElementById('logoutBtn').addEventListener('click', (e) => {
 
 // Allows for showing and hiding the add contact window
 addContactBtn.addEventListener('click', () => {
-    console.log("Opening");
     addContactWindow.classList.remove('hidden');
 });
 closeModalBtn.addEventListener('click', () => {
-    console.log("Closing")
     addContactWindow.classList.add('hidden');
 });
 // If the user clicks off the add user screen
@@ -30,8 +37,38 @@ addContactWindow.addEventListener('click', (e) => {
     }
 });
 
+editContactBtn.addEventListener('click', (e) => {
+    
+})
+// Maybe have the button replace itself with a checkmark to signify being done
 
 
+
+function verifyEmail(email){
+    // Regex
+    return True;
+}
+
+function verifyPhone(phone){
+    // Regex
+    return True;
+    document.getElementById('errorMsgPhone').classList.add("hidden");
+
+    // If false, display some html saying "fix it"
+    document.getElementById('errorMsgPhone').classList.remove("hidden");
+}
+
+
+
+
+
+
+
+
+
+
+
+// Limit to 50 per page
 // Get all contacts from the php endpoint
 function getContacts(){
     // Just for testing the front end logic
