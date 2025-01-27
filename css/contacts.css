@@ -2,6 +2,7 @@ html,
 body {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
     width: 100%;
     height: 100%;
     background: linear-gradient(180deg, #2c3e50, #34495e, #1abc9c);
@@ -21,19 +22,17 @@ body {
 }
 
 #logoImg {
-    margin-left: 0;
-    height: auto;
+    height: 100%;
     width: auto;
-    max-height: 100%;
-    max-width: 100%;
+    object-fit: contain;
 }
 
 #headerTitle {
+    flex-grow: 1;
+    text-align: center;
     font-size: 4rem;
     margin: 0;
     line-height: 5rem;
-    align-items: center;
-    justify-self: center;
 }
 
 #navButtons {
@@ -173,11 +172,13 @@ body {
 
 /* Add contact form styling */
 
-#addContactModal {
+#addContactModal,
+#editContactModal {
     position: fixed;
     top: 0;
     left: 0;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 1000;
@@ -191,7 +192,8 @@ body {
     display: none !important;
 }
 
-#addContactWindow {
+#addContactWindow,
+#editContactWindow {
     justify-content: center;
     align-items: center;
     position: relative;
@@ -209,7 +211,7 @@ body {
     font-size: 32px;
 }
 
-#closeModal {
+.closeModal {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -221,7 +223,7 @@ body {
     cursor: pointer;
 }
 
-#closeModal:hover {
+.closeModal:hover {
     color: #650202
 }
 
@@ -268,4 +270,13 @@ form button {
 
 form button:hover {
     background-color: #69f5fe;
+}
+
+#buttonContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    margin-top: 15px;
+    margin-bottom: 25px;
+    align-self: center;
 }

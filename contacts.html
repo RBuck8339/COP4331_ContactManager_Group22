@@ -8,11 +8,12 @@
     <script type="text/javascript" src="js/header.js" defer></script>
     <link href="css/contacts.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
     <div id="header">
-        <img id="logoImage" src="assets/images/logo_1.png" alt="Logo">
+        <img id="logoImg" src="assets/images/logo.png" alt="Logo">
         <p id="headerTitle">Contact Manager</p>
         <div id="navButtons">
             <button type="button" id="settingsBtn" class="buttons">Settings</button>
@@ -55,7 +56,7 @@
 
     <div id="addContactModal" class="hidden">
         <div id="addContactWindow">
-            <button id="closeModal">&times;</button>
+            <button class="closeModal">&times;</button>
             <h2 id="modalHeader">Add New Contact</h2>
             <form id="addContactForm">
                 <label for="firstName">First Name:</label>
@@ -76,8 +77,31 @@
         </div>
     </div>
 
-    <!-- Make a modal for edit contact -->
-    <!-- Have it use an alert message for "are you sure that you want to delete contact "X"""-->
+    <div id="editContactModal" class="hidden">
+        <div id="editContactWindow">
+            <button class="closeModal">&times;</button>
+            <h2 id="modalHeader">Edit Existing Contact</h2>
+            <form id="editContactForm">
+                <label for="firstName">First Name:</label>
+                <input type="text" id="editFirstName" name="firstName" required>
+                <label for="lastName">Last Name:</label>
+                <input type="text" id="editLastName" name="lastName" required>
+                <label for="email">Email:</label>
+                <input type="text" id="editEmail" name="emailAddress" required>
+                <p class="hidden" id="errorMsgEmail">*Please enter a valid email address</p>
+                <label for="Phone">Phone:</label>
+                <input type="text" id="editPhone" name="phoneNumber" required>
+                <p class="hidden" id="errorMsgPhone">*Please enter a valid phone number</p>
+                <label for="Address">Address:</label>
+                <input type="text" id="editAddress" name="address" required>
+
+                <div id="buttonContainer">
+                    <button type="submit">Submit</button>
+                    <button id="deleteContactBtn">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 </body>
 
