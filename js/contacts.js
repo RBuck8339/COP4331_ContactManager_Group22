@@ -45,8 +45,9 @@ editContactBtn.addEventListener('click', (e) => {
 
 // INPUT VALIDITY
 
+// Email validation
 emailInput.addEventListener("blur", (event) => {
-    const email = event.target.value; // Get the input value from the event
+    const email = event.target.value; 
 
     // Regular Expression to validate emails
     const regex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
@@ -62,15 +63,23 @@ emailInput.addEventListener("blur", (event) => {
     }
 });
 
-function verifyPhone(phone){
-    // Regex
-    return True;
-    document.getElementById('errorMsgPhone').classList.add("hidden");
+// Phone number validation
+phoneInput.addEventListener("blur", (event) => {
+    const phone = event.target.value; 
 
-    // If false, display some html saying "fix it"
-    document.getElementById('errorMsgPhone').classList.remove("hidden");
-}
+    // Regular Expression to validate phone numbers
+    const regex = /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
 
+    if (regex.test(phone)) {
+        document.getElementById('errorMsgPhone').classList.add("hidden"); // Valid
+        phoneInput.classList.remove("border-red");
+        phoneInput.classList.add("border-green"); // Add green outline
+    } else {
+        document.getElementById('errorMsgPhone').classList.remove("hidden"); // Invalid
+        phoneInput.classList.remove("border-green");
+        phoneInput.classList.add("border-red"); // Add red outline
+    }
+});
 
 
 
