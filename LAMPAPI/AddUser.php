@@ -1,19 +1,19 @@
 <?php
 	$inData = getRequestInfo();
 
-  $firstName = $inData["firstName"];
+ 	$firstName = $inData["firstName"];
  	$lastName = $inData["lastName"];
  	$login = $inData["login"];
-  $password = $inData["password"];
+  	$password = $inData["password"];
 
-	$conn = new mysqli("localhost", "root", "Group22Rules", "COP4331");
+	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331","contact_manager");
 	if ($conn->connect_error) 
 	{
 		returnWithError( $conn->connect_error );
 	} 
 	else
 	{
-		$stmt = $conn->prepare("INSERT INTO Contacts (FirstName,LastName,Login,Password) VALUES(?,?,?,?)");
+		$stmt = $conn->prepare("INSERT INTO Users (FirstName,LastName,Login,Password) VALUES(?,?,?,?)");
 		$stmt->bind_param("ssss", $firstName, $lastName, $login, $password);
 		$stmt->execute();
 		$stmt->close();

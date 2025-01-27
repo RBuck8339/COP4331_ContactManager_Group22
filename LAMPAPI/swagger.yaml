@@ -1,0 +1,103 @@
+openapi: 3.0.0              # Root level: OpenAPI version
+info:                      # Root level: Metadata about the API
+  title: LAMPAPI           # API name
+  version: 1.0.0           # API version
+servers:                   # List of servers where the API is hosted
+  - url: http://45.55.167.62/LAMPAPI # Base URL for the API
+paths:                     # Contains all API endpoints
+  /Login.php:              # Defines the login endpoint
+    post:                  # HTTP POST method
+      summary: Login a user      # Description of the operation
+      requestBody:               # Describes what the client must send in the request
+        required: true           # Indicates the requestBody is mandatory
+        content:                 # Specifies the format of the request body
+          application/json:      # Media type (JSON), expected format
+            schema:              # Defines the structure of the request body
+              type: object       # Request body is a JSON object
+              properties:        # Fields (keys) within the JSON object
+                login:           # Field `login`
+                  type: string   # Data type for `login` (string)
+                  example: RickL # Example value for `login`
+                password:        # Field `password`
+                  type: string   # Data type for `password` (string)
+                  example: COP4331 # Example value for `password`
+      responses:                 # Describes possible server responses
+        '200':                   # HTTP status code for a successful response
+          description: Successful login  # Description of the response
+          content:                      # Response content type
+            application/json:           # Response is in JSON format
+              schema:                   # Defines the structure of the response
+                type: object            # Response is a JSON object
+                properties:             # Fields (keys) within the JSON response
+                  id:                   # Field `id`
+                    type: integer       # Data type for `id` (integer)
+                    example: 1          # Example value for `id`
+                  firstName:            # Field `firstName`
+                    type: string        # Data type for `firstName` (string)
+                    example: Rick       # Example value
+                  lastName:             # Field `lastName`
+                    type: string        # Data type for `lastName` (string)
+                    example: Leinecker  # Example value
+                  error:                # Field `error`
+                    type: string        # Data type for `error` (string)
+                    example: ""         # Example value (empty for no error)
+        '400':                   # HTTP status code for a bad request
+          description: Bad request (e.g., missing fields, invalid data)  # Description of this response
+          content:                      # Response content type
+            application/json:           # Response is in JSON format
+              schema:                   # Defines the structure of the error response
+                type: object            # Response is a JSON object
+                properties:             # Fields (keys) within the error response
+                  error:                # Field `error`
+                    type: string        # Data type for `error` (string)
+                    example: Invalid request body or missing fields. # Example error
+
+  /AddUser.php:            # Defines the registration endpoint
+    post:                  # HTTP POST method
+      summary: Register a new user  # Description of the operation
+      requestBody:               # Describes what the client must send in the request
+        required: true           # Indicates the requestBody is mandatory
+        content:                 # Specifies the format of the request body
+          application/json:      # Media type (JSON), expected format
+            schema:              # Defines the structure of the request body
+              type: object       # The request body is a JSON object
+              properties:        # Fields (keys) within the JSON object
+                firstName:       # Field `firstName`
+                  type: string   # Data type for `firstName` (string)
+                  example: Rick  # Example value for `firstName`
+                lastName:        # Field `lastName`
+                  type: string   # Data type for `lastName` (string)
+                  example: Leinecker # Example value for `lastName`
+                login:           # Field `login`
+                  type: string   # Data type for `login` (string)
+                  example: RickL # Example value for `login`
+                password:        # Field `password`
+                  type: string   # Data type for `password` (string)
+                  example: COP4331 # Example value for `password`
+      responses:                 # Describes possible server responses
+        '201':                   # HTTP status code for a successful response
+          description: User registered successfully  # Description of this response
+          content:                      # Response content type
+            application/json:           # Response is in JSON format
+              schema:                   # Defines the structure of the response
+                type: object            # The response is a JSON object
+                properties:             # Fields (keys) within the JSON response
+                  id:                   # Field `id`
+                    type: integer       # Data type for `id` (integer)
+                    example: 2          # Example value for `id`
+                  message:              # Field `message`
+                    type: string        # Data type for `message` (string)
+                    example: User registered successfully. # Example message
+                  error:                # Field `error`
+                    type: string        # Data type for `error` (string)
+                    example: ""         # Example value (empty for no error)
+        '400':                   # HTTP status code for a bad request
+          description: Bad request (e.g., missing fields, invalid data)  # Description of this response
+          content:                      # Response content type
+            application/json:           # Response is in JSON format
+              schema:                   # Defines the structure of the error response
+                type: object            # The response is a JSON object
+                properties:             # Fields (keys) within the error response
+                  error:                # Field `error`
+                    type: string        # Data type for `error` (string)
+                    example: Invalid request body or missing fields. # Example error
