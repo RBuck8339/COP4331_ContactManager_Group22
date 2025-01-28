@@ -1,11 +1,11 @@
 const contacts_data = document.getElementById('contactsData');
 const addContactWindow = document.getElementById('addContactModal');
+const editContactWindow = document.getElementById('editContactModal');
 const addContactBtn = document.getElementById('addContactBtn');
 const editContactBtn = document.getElementById('editContactBtn');
-const closeModalBtn = document.querySelector('.closeModal');
+const closeModalBtns = document.querySelectorAll('.closeModal');
 const addContactForm = document.getElementById('addContactForm');
-const submitContactBtn = document.getElementById('contact-submit');
-
+const editContactForm = document.getElementById('editContactForm');
 
 // Contact form elements
 const firstNameInput = document.getElementById('firstName');
@@ -25,22 +25,32 @@ document.getElementById('logoutBtn').addEventListener('click', (e) => {
     window.location.href = 'logout.html'; 
 });
 
-// Allows for showing and hiding the add contact window
+
+// Allows for showing and hiding the modals
 addContactBtn.addEventListener('click', () => {
     addContactWindow.classList.remove('hidden');
 });
-closeModalBtn.addEventListener('click', () => {
-    addContactWindow.classList.add('hidden');
+editContactBtn.addEventListener('click', () => {
+    editContactWindow.classList.remove('hidden')
+})
+
+// For closing the modals
+closeModalBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        addContactWindow.classList.add('hidden');
+        editContactWindow.classList.add('hidden');
+    });
 });
-// If the user clicks off the add user screen
-addContactWindow.addEventListener('click', (e) => {
+// If the user clicks off the modal
+addContactWindow.addEventListener('mousedown', (e) => {
     if(e.target === addContactWindow){
         addContactWindow.classList.add('hidden');
     }
 });
-
-editContactBtn.addEventListener('click', (e) => {
-    
+editContactWindow.addEventListener('mousedown', (e) => {
+    if(e.target === editContactWindow){
+        editContactWindow.classList.add('hidden');
+    }
 })
 // Maybe have the button replace itself with a checkmark to signify being done
 
@@ -89,6 +99,7 @@ submitContactBtn.addEventListener("click", (event) => {
         event.preventDefault();
     }
 });
+
 
 
 
