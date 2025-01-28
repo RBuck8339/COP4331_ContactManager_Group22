@@ -4,6 +4,8 @@ const addContactBtn = document.getElementById('addContactBtn');
 const editContactBtn = document.getElementById('editContactBtn');
 const closeModalBtn = document.querySelector('.closeModal');
 const addContactForm = document.getElementById('addContactForm');
+const submitContactBtn = document.getElementById('contact-submit');
+
 
 // Contact form elements
 const firstNameInput = document.getElementById('firstName');
@@ -45,45 +47,48 @@ editContactBtn.addEventListener('click', (e) => {
 
 // INPUT VALIDITY
 
-// Email validation
-emailInput.addEventListener("blur", (event) => {
-    const email = event.target.value; 
+// Error prompts
+const emailError = document.getElementById('errorMsgEmail');
+const phoneError = document.getElementById('errorMsgPhone');
 
-    // Regular Expression to validate emails
-    const regex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+// Email and phone regex
+const emailRegex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+const phoneRegex = /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
 
-    if (regex.test(email)) {
-        document.getElementById('errorMsgEmail').classList.add("hidden"); // Valid
-        emailInput.classList.remove("border-red");
-        emailInput.classList.add("border-green"); // Add green outline
+// Input validation function
+function validateInput(input, regex, errorMsg) {
+    if (regex.test(input.value)) {
+        errorMsg.classList.add('hidden'); // Hide error message if valid
+        input.classList.remove('border-red'); // Remove error outline
     } else {
-        document.getElementById('errorMsgEmail').classList.remove("hidden"); // Invalid
-        emailInput.classList.remove("border-green");
-        emailInput.classList.add("border-red"); // Add red outline
+        errorMsg.classList.remove('hidden'); // Show error message if invalid
+        input.classList.add('border-red'); // Add error outline
+    }
+}
+
+// Evaluate input after field is manipulated
+emailInput.addEventListener('blur', () => validateInput(emailInput, emailRegex, emailError));
+phoneInput.addEventListener('blur', () => validateInput(phoneInput, phoneRegex, phoneError));
+
+// Submit event listener
+submitContactBtn.addEventListener("click", (event) => {
+    // Validate inputs in case the user clicks submit without making changes
+    validateInput(emailInput, emailRegex, emailError);
+    validateInput(phoneInput, phoneRegex, phoneError);
+
+    // Check if all error messages are hidden
+    const isEmailValid = emailError.classList.contains('hidden');
+    const isPhoneValid = phoneError.classList.contains('hidden');
+
+    if (isEmailValid && isPhoneValid) {
+        // All fields are valid, proceed with form submission or API call
+        console.log("Form is valid");
+        // Add API call logic here
+    } else {
+        // Prevent form submission if any field is invalid
+        event.preventDefault();
     }
 });
-
-// Phone number validation
-phoneInput.addEventListener("blur", (event) => {
-    const phone = event.target.value; 
-
-    // Regular Expression to validate phone numbers
-    const regex = /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
-
-    if (regex.test(phone)) {
-        document.getElementById('errorMsgPhone').classList.add("hidden"); // Valid
-        phoneInput.classList.remove("border-red");
-        phoneInput.classList.add("border-green"); // Add green outline
-    } else {
-        document.getElementById('errorMsgPhone').classList.remove("hidden"); // Invalid
-        phoneInput.classList.remove("border-green");
-        phoneInput.classList.add("border-red"); // Add red outline
-    }
-});
-
-
-
-
 
 
 
