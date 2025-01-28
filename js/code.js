@@ -5,6 +5,12 @@ let userId = 0;
 let firstName = "";
 let lastName = "";
 
+// Register user upon clicking register
+const registerForm =  document.getElementById('registerForm');
+registerForm.addEventListener("submit", (event) => {
+	doRegister(event);
+});
+
 function doLogin()
 {
 	userId = 0;
@@ -182,4 +188,10 @@ function searchColor()
 		document.getElementById("colorSearchResult").innerHTML = err.message;
 	}
 	
+}
+
+// Register user into database
+function doRegister(){
+	firstName = document.getElementById('userFirstName');
+	lastName = document.getElementById('userLastName');
 }
