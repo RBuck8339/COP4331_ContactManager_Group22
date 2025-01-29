@@ -194,7 +194,9 @@ function searchColor()
 	
 }
 
-function validateInput(input, regex, errorMsg) {
+// Checks if password follows format
+function validatePassword(input, regex, errorMsg) {
+	// If password invalid
     if (regex.test(input.value)) {
         errorMsg.classList.add('hidden'); // Hide error message if valid
         input.classList.remove('border-red'); // Remove error outline
@@ -204,7 +206,9 @@ function validateInput(input, regex, errorMsg) {
     }
 }
 
+// Checks if the user confirms their password
 function confirmPassword(input, password1, password2, errorMsg){
+	// If passwords do not match
 	if(password1 === password2){
 		errorMsg.classList.add('hidden'); // Hide error message if valid
 		input.classList.remove('border-red'); // Remove error outline
@@ -217,20 +221,24 @@ function confirmPassword(input, password1, password2, errorMsg){
 // Register user into database
 function doRegister(event){
 	
-	// Fetch user's informatioh 
+	// Regex to validate password
 	const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[A-Za-z])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
+	
+	//Fetch input forms and user's information
 	firstName = document.getElementById('userFirstName').value;
 	lastName = document.getElementById('userLastName').value;
 	const username = document.getElementById('registerUsername');
 	const password = document.getElementById('registerPassword');
 	const passwordConfirm = document.getElementById('registerPasswordConfirm');
 
-	validateInput(password, passwordRegex, passwordError);
+	// Perform password checks
+	validatePassword(password, passwordRegex, passwordError);
 	confirmPassword(passwordConfirm, password.value, passwordConfirm.value, passwordConfirmErorr);
 
 	const isPasswordValid = passwordError.classList.contains('hidden');
     const isPasswordMatch = passwordConfirmErorr.classList.contains('hidden');
 
+	// If password is valid and confirmed
 	if (isPasswordValid && isPasswordMatch) {
         // All fields are valid, proceed with form submission or API call
         console.log("Form is valid");
@@ -241,7 +249,7 @@ function doRegister(event){
 			username,
 			password
 		};
-
+		
     } else {
         // Prevent form submission if any field is invalid
         event.preventDefault();
