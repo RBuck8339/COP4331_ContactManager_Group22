@@ -1,3 +1,4 @@
+
 const urlBase = 'http://COP4331-5.com/LAMPAPI';
 const extension = 'php';
 
@@ -5,14 +6,12 @@ let userId = 0;
 let firstName = "";
 let lastName = "";
 
-
 const passwordError = document.getElementById('errorMsgPassword');
 const passwordConfirmErorr = document.getElementById('errorMsgPasswordConfirm');
 
 // Register user upon clicking register
 const registerForm =  document.getElementById('registerForm');
 registerForm.addEventListener("submit", (event) => {
-	event.preventDefault();
 	doRegister(event);
 });
 
@@ -195,34 +194,56 @@ function searchColor()
 	
 }
 
+function validateInput(input, regex, errorMsg) {
+    if (regex.test(input.value)) {
+        errorMsg.classList.add('hidden'); // Hide error message if valid
+        input.classList.remove('border-red'); // Remove error outline
+    } else {
+        errorMsg.classList.remove('hidden'); // Show error message if invalid
+        input.classList.add('border-red'); // Add error outline
+    }
+}
+
+function confirmPassword(input, password1, password2, errorMsg){
+	if(password1 === password2){
+		errorMsg.classList.add('hidden'); // Hide error message if valid
+		input.classList.remove('border-red'); // Remove error outline
+	} else {
+		errorMsg.classList.remove('hidden'); // Show error message if invalid
+		input.classList.add('border-red'); // Add error outline
+	}
+}
+
 // Register user into database
 function doRegister(event){
+	
 	// Fetch user's informatioh 
- 
-	const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}(?=.*\d)$/;
+	const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[A-Za-z])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
 	firstName = document.getElementById('userFirstName').value;
 	lastName = document.getElementById('userLastName').value;
-	const username = document.getElementById('registerUsername').value;
-	const password = document.getElementById('registerPassword').value;
-	const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
+	const username = document.getElementById('registerUsername');
+	const password = document.getElementById('registerPassword');
+	const passwordConfirm = document.getElementById('registerPasswordConfirm');
 
-	if(!passwordRegex.test(password)){
-		
-	}
+	validateInput(password, passwordRegex, passwordError);
+	confirmPassword(passwordConfirm, password.value, passwordConfirm.value, passwordConfirmErorr);
 
-	// Fetch the confirmed passowrd
+	const isPasswordValid = passwordError.classList.contains('hidden');
+    const isPasswordMatch = passwordConfirmErorr.classList.contains('hidden');
 
-	// IF password is invalid regex, then prevent the default event and display error prompt
-	// OR, if passowrds do not match, display prompt for that 
+	if (isPasswordValid && isPasswordMatch) {
+        // All fields are valid, proceed with form submission or API call
+        console.log("Form is valid");
+        
+		const data = {
+			firstName,
+			lastName,
+			username,
+			password
+		};
 
-	// ELSE, proceed with event and processe form data, call API
-
-	const data = {
-		firstName,
-		lastName,
-		username,
-		password
-	};
-
-	console.log(data);
+    } else {
+        // Prevent form submission if any field is invalid
+        event.preventDefault();
+    }
 }
