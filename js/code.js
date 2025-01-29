@@ -5,9 +5,14 @@ let userId = 0;
 let firstName = "";
 let lastName = "";
 
+
+const passwordError = document.getElementById('errorMsgPassword');
+const passwordConfirmErorr = document.getElementById('errorMsgPasswordConfirm');
+
 // Register user upon clicking register
 const registerForm =  document.getElementById('registerForm');
 registerForm.addEventListener("submit", (event) => {
+	event.preventDefault();
 	doRegister(event);
 });
 
@@ -191,7 +196,33 @@ function searchColor()
 }
 
 // Register user into database
-function doRegister(){
-	firstName = document.getElementById('userFirstName');
-	lastName = document.getElementById('userLastName');
+function doRegister(event){
+	// Fetch user's informatioh 
+ 
+	const passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}(?=.*\d)$/;
+	firstName = document.getElementById('userFirstName').value;
+	lastName = document.getElementById('userLastName').value;
+	const username = document.getElementById('registerUsername').value;
+	const password = document.getElementById('registerPassword').value;
+	const passwordConfirm = document.getElementById('registerPasswordConfirm').value;
+
+	if(!passwordRegex.test(password)){
+		
+	}
+
+	// Fetch the confirmed passowrd
+
+	// IF password is invalid regex, then prevent the default event and display error prompt
+	// OR, if passowrds do not match, display prompt for that 
+
+	// ELSE, proceed with event and processe form data, call API
+
+	const data = {
+		firstName,
+		lastName,
+		username,
+		password
+	};
+
+	console.log(data);
 }

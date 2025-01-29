@@ -26,8 +26,8 @@
             <p id="menuName">Login</p>
             <form id="loginForm">
             <div id="inputs">
-                    <input type="text" id="loginName" placeholder="Username" required>
-                    <input type="password" id="loginPassword" placeholder="Password" required>
+                    <input type="text" class="loginName" id="loginUsername" placeholder="Username" required>
+                    <input type="password" id="loginPassword" id="loginPassword" placeholder="Password" required>
                     <span id="loginResult"></span>
                     <!-- Could do password forgotten: <a href="#" onclick="forgotPassword()">Forgot Password?</a> -->
     
@@ -53,8 +53,9 @@
                     <input type="text" id="userFirstName" placeholder="First Name" required>
                     <input type="text" id="userLastName" placeholder="Last Name" required>
                     <!-- Date of Birth? -->
-                    <input type="text" id="loginName" placeholder="Username" required>
-                    <input type="password" id="loginPassword" placeholder="Password" required>
+                    <input type="text" class="loginName" id="registerUsername" placeholder="Username" required>
+                    <input type="password" id="registerPassword" placeholder="Password" required>
+                    <p class="hidden error" id="errorMsgPassword">*Please enter a valid password.</p>
                     <div id="passRequirements">
                         <ul>
                             <li>Password must be 8 characters or more</li>
@@ -63,8 +64,8 @@
                             <li>None of this actually works yet</li>
                         </ul>
                     </div>
-                    <input type="password" id="loginPasswordConfirm" placeholder="Confirm Password" required>
-
+                    <input type="password" id="registerPasswordConfirm" placeholder="Confirm Password" required>
+                    <p class="hidden error" id="errorMsgPasswordConfirm">*Passwords do not match.</p>
                     <button class="loginSubmit" id="register" type="submit">Register</button>
             </div>
             </form>
