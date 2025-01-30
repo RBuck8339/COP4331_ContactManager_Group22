@@ -169,6 +169,19 @@ body {
     text-align: center;
 }
 
+#editButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 35px;
+}
+
+#editButtons img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
 
 /* Add contact form styling */
 
@@ -188,7 +201,8 @@ body {
     text-decoration: underline;
 }
 
-.hidden {
+.hidden,
+.hiddenCell {
     display: none !important;
 }
 
