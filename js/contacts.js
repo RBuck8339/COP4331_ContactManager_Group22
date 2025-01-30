@@ -20,9 +20,28 @@ document.getElementById('settingsBtn').addEventListener('click', (e) => {
     e.preventDefault();
     window.location.href = 'settings.html';
 });
-document.getElementById('logoutBtn').addEventListener('click', (e) => {
-    e.preventDefault();
-    window.location.href = 'logout.html'; 
+document.addEventListener("DOMContentLoaded", function () {
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", function () {
+            fetch("LAMPAPI/Logout.php", { // Adjusted path
+                method: "GET",
+                credentials: "same-origin" // Ensures cookies/session data are sent
+            })
+            .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url; // Redirect to login.html
+                } else {
+                    console.log("Logout successful, redirecting...");
+                    window.location.href = "login.html"; // Ensure manual redirection
+                }
+            })
+            .catch(error => console.error("Logout Error:", error));
+        });
+    } else {
+        console.error("Logout button not found.");
+    }
 });
 
 
