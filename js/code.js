@@ -14,7 +14,7 @@ const passwordConfirm = document.getElementById('registerPasswordConfirm');
 // Register user upon clicking register
 const registerForm =  document.getElementById('registerForm');
 registerForm.addEventListener("submit", (event) => {
-	doRegister(event);
+	checkRegister(event);
 });
 
 function doLogin()
@@ -227,7 +227,7 @@ password.addEventListener('blur', () => validatePassword(password, passwordRegex
 passwordConfirm.addEventListener('blur', () => confirmPassword(passwordConfirm, password.value, passwordConfirm.value, passwordConfirmErorr));
 
 // Register user into database
-function doRegister(event){
+function checkRegister(event){
 	
 	//Fetch input forms and user's information
 	firstName = document.getElementById('userFirstName').value;
