@@ -1,4 +1,8 @@
 <?php
+	header("Access-Control-Allow-Origin: *"); // Allow requests from any domain
+	header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+	header("Access-Control-Allow-Headers: Content-Type");
+	
 	$inData = getRequestInfo();
 
  	$firstName = $inData["firstName"];
