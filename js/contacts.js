@@ -14,6 +14,28 @@ const phoneInput = document.getElementById('phone');
 const emailInput = document.getElementById('email');
 const addressInput = document.getElementById('address');
 
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("LAMPAPI/checkSession.php", { 
+        method: "GET",
+        credentials: "same-origin" // Ensures cookies/session are sent
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Session check failed");
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log("User authenticated:", data);
+    })
+    .catch(error => {
+        console.error("Not logged in. Redirecting...");
+        window.location.href = "login.html"; 
+    });
+
+    // Ensure this code executes AFTER the session check
+    initializeContactsPage();
+});
 
 // Each of the below changes the current screen based on button press
 document.getElementById('settingsBtn').addEventListener('click', (e) => {
