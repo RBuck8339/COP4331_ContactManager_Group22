@@ -5,6 +5,7 @@ const addContactBtn = document.getElementById('addContactBtn');
 const closeModalBtns = document.querySelectorAll('.closeModal');
 const addContactForm = document.getElementById('addContactForm');
 const editContactForm = document.getElementById('editContactForm');
+const searchBar = document.getElementById('searchBar');
 
 // Contact form elements
 const firstNameInput = document.getElementById('firstName');
@@ -314,6 +315,32 @@ function deleteContact(row){
 function addContact(data){
 
 }
+
+// Search Contacts
+searchBar.addEventListener('input', () => {
+    let curr_search = searchBar.value;
+
+    let name_parts = curr_search.split(' ');
+    let first_name;
+    let last_name;
+
+    if(name_parts.length === 1){
+        first_name = name_parts[0];
+        last_name = name_parts[0];
+    }
+    // Just using first two
+    else{
+        first_name = name_parts[0];
+        last_name = name_parts[1];
+    }
+
+    console.log('First name is %s\n', first_name);
+    console.log('Last name is %s\n', last_name);
+
+    // Add logic for search call
+
+})
+
 
 // Makes sure it executes after loading
 document.addEventListener('DOMContentLoaded', () => {
