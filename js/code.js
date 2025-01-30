@@ -53,7 +53,7 @@ function loginUser(){
 		  alert(`Login failed: ${data.error}`);
 		} else {
 		  console.log(`Logged in successfully! Welcome ${data.firstName} ${data.lastName}`);
-		  window.location.href = 'contacts.html'; 
+		  window.location.href = 'contacts'; 
 		}
 	  } catch (err) {
 		console.error("Error parsing response:", err);
@@ -102,7 +102,7 @@ function readCookie()
 	
 	if( userId < 0 )
 	{
-		window.location.href = "index.html";
+		window.location.href = "index";
 	}
 	else
 	{
@@ -116,7 +116,7 @@ function doLogout()
 	firstName = "";
 	lastName = "";
 	document.cookie = "firstName= ; expires = Thu, 01 Jan 1970 00:00:00 GMT";
-	window.location.href = "index.html";
+	window.location.href = "index";
 }
 
 function addColor()

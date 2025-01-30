@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .catch(error => {
         console.error("Not logged in. Redirecting...");
-        window.location.href = "login.html"; 
+        window.location.href = "login"; 
     });
 
     // Ensure this code executes AFTER the session check
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // Each of the below changes the current screen based on button press
 document.getElementById('settingsBtn').addEventListener('click', (e) => {
     e.preventDefault();
-    window.location.href = 'settings.html';
+    window.location.href = 'settings';
 });
 document.addEventListener("DOMContentLoaded", function () {
     const logoutBtn = document.getElementById("logoutBtn");
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     window.location.href = response.url; // Redirect to login.html
                 } else {
                     console.log("Logout successful, redirecting...");
-                    window.location.href = "login.html"; // Ensure manual redirection
+                    window.location.href = "login"; // Ensure manual redirection
                 }
             })
             .catch(error => console.error("Logout Error:", error));
