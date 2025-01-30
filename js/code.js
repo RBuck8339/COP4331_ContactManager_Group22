@@ -20,6 +20,7 @@ registerForm.addEventListener("submit", (event) => {
 const loginForm = document.getElementById('loginForm');
 loginForm.addEventListener("submit", (event) => {
 	loginUser(event)
+	event.preventDefault();
 });
 
 function loginUser(){	
@@ -35,27 +36,36 @@ function loginUser(){
 	};
 
 	// Send POST request to the login endpoint
-	fetch(`${urlBase}/LAMPAPI/login.php`, {
+	fetch(`${urlBase}/Login.php`, {
 		method: 'POST', 
 		headers: {
 			'Content-Type': 'application/json',
 		},
-		body: JSON.stringify(data)
+		body: JSON.stringify(data),
 	})
 
-	.then(response => response.json())  // Parse the JSON response from the server
-    .then(data => {
-      // Check if the server returned an error
-      if (data.error) {
-        // If error is present, show the error message
-        alert(`Login failed: ${data.error}`);
-      } else {
-        // If no error, log in is successful
-        console.log(`Logged in successfully! Welcome ${data.firstName} ${data.lastName}`);
-		window.location.href = 'contacts.html'; 
+	.then(response => response.text())  // Get the response as text first
+	.then(text => {
+	  console.log("Server Response:", text);  // Log the response text
+	  try {
+		const data = JSON.parse(text);  // Try parsing the response as JSON
+		if (data.error) {
+		  alert(`Login failed: ${data.error}`);
+		} else {
+		  console.log(`Logged in successfully! Welcome ${data.firstName} ${data.lastName}`);
+		  window.location.href = 'contacts.html'; 
 		}
+	  } catch (err) {
+		console.error("Error parsing response:", err);
+		alert("Failed to parse server response.");
+	  }
+	})
+	.catch(error => {
+	  console.error("Error in fetch:", error);
+	  alert("An error occurred. Please try again later.");
 	});
 }
+
 
 
 
