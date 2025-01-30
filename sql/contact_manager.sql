@@ -22,6 +22,7 @@ CREATE TABLE `Contacts` (
     `Phone` VARCHAR(50) NOT NULL DEFAULT '',
     `Email` VARCHAR(50) NOT NULL DEFAULT '',
     `UserID` INT NOT NULL DEFAULT '0',
+    `Address` VARCHAR(255) NOT NULL DEFAULT '',
     PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB;
 
