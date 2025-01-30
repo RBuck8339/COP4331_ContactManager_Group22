@@ -1,3 +1,9 @@
+// Redirect non-www to www version
+document.addEventListener("DOMContentLoaded", function () {
+    if (window.location.hostname === "contactsbycoastal.com") {
+        window.location.href = "http://www.contactsbycoastal.com" + window.location.pathname + window.location.search;
+    }
+});
 
 const urlBase = 'http://www.contactsbycoastal.com/LAMPAPI';
 const extension = 'php';
