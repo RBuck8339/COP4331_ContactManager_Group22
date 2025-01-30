@@ -8,6 +8,8 @@ let lastName = "";
 
 const passwordError = document.getElementById('errorMsgPassword');
 const passwordConfirmErorr = document.getElementById('errorMsgPasswordConfirm');
+const password = document.getElementById('registerPassword');
+const passwordConfirm = document.getElementById('registerPasswordConfirm');
 
 // Register user upon clicking register
 const registerForm =  document.getElementById('registerForm');
@@ -218,18 +220,19 @@ function confirmPassword(input, password1, password2, errorMsg){
 	}
 }
 
+// Regex to validate password
+const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[A-Za-z])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
+
+password.addEventListener('blur', () => validatePassword(password, passwordRegex, passwordError));
+passwordConfirm.addEventListener('blur', () => confirmPassword(passwordConfirm, password.value, passwordConfirm.value, passwordConfirmErorr));
+
 // Register user into database
 function doRegister(event){
-	
-	// Regex to validate password
-	const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[A-Za-z])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
 	
 	//Fetch input forms and user's information
 	firstName = document.getElementById('userFirstName').value;
 	lastName = document.getElementById('userLastName').value;
 	const username = document.getElementById('registerUsername');
-	const password = document.getElementById('registerPassword');
-	const passwordConfirm = document.getElementById('registerPasswordConfirm');
 
 	// Perform password checks
 	validatePassword(password, passwordRegex, passwordError);
