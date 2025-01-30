@@ -17,58 +17,47 @@ registerForm.addEventListener("submit", (event) => {
 	checkRegister(event);
 });
 
-function doLogin()
-{
-	userId = 0;
-	firstName = "";
-	lastName = "";
-	
-	let login = document.getElementById("loginName").value;
-	let password = document.getElementById("loginPassword").value;
-//	var hash = md5( password );
-	
-	document.getElementById("loginResult").innerHTML = "";
+const loginForm = document.getElementById('loginForm');
+loginForm.addEventListener("submit", (event) => {
+	loginUser(event)
+});
 
-	let tmp = {login:login,password:password};
-//	var tmp = {login:login,password:hash};
-	let jsonPayload = JSON.stringify( tmp );
-	
-	let url = urlBase + '/Login.' + extension;
+function loginUser(){	
 
-	let xhr = new XMLHttpRequest();
-	xhr.open("POST", url, true);
-	xhr.setRequestHeader("Content-type", "application/json; charset=UTF-8");
-	try
-	{
-		xhr.onreadystatechange = function() 
-		{
-			if (this.readyState == 4 && this.status == 200) 
-			{
-				let jsonObject = JSON.parse( xhr.responseText );
-				userId = jsonObject.id;
-		
-				if( userId < 1 )
-				{		
-					document.getElementById("loginResult").innerHTML = "User/Password combination incorrect";
-					return;
-				}
-		
-				firstName = jsonObject.firstName;
-				lastName = jsonObject.lastName;
+	// Fetch login information
+	const login = document.getElementById('loginUsername').value;
+	const password = document.getElementById('loginPassword').value;
 
-				saveCookie();
-	
-				window.location.href = "color.html";
-			}
-		};
-		xhr.send(jsonPayload);
-	}
-	catch(err)
-	{
-		document.getElementById("loginResult").innerHTML = err.message;
-	}
+	// Create json for login data
+	const data = { 
+		login: login,
+		password: password
+	};
 
+	// Send POST request to the login endpoint
+	fetch(`${urlBase}/LAMPAPI/login.php`, {
+		method: 'POST', 
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify(data)
+	})
+
+	.then(response => response.json())  // Parse the JSON response from the server
+    .then(data => {
+      // Check if the server returned an error
+      if (data.error) {
+        // If error is present, show the error message
+        alert(`Login failed: ${data.error}`);
+      } else {
+        // If no error, log in is successful
+        console.log(`Logged in successfully! Welcome ${data.firstName} ${data.lastName}`);
+		window.location.href = 'contacts.html'; 
+		}
+	});
 }
+
+
 
 function saveCookie()
 {
@@ -226,13 +215,13 @@ const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[A-Za-z])[A-Za-
 password.addEventListener('blur', () => validatePassword(password, passwordRegex, passwordError));
 passwordConfirm.addEventListener('blur', () => confirmPassword(passwordConfirm, password.value, passwordConfirm.value, passwordConfirmErorr));
 
-// Register user into database
+// Check if we can register the user 
 function checkRegister(event){
 	
 	//Fetch input forms and user's information
-	firstName = document.getElementById('userFirstName').value;
-	lastName = document.getElementById('userLastName').value;
-	const username = document.getElementById('registerUsername');
+	const firstName = document.getElementById('userFirstName').value;
+	const lastName = document.getElementById('userLastName').value;
+	const login = document.getElementById('registerUsername').value;
 
 	// Perform password checks
 	validatePassword(password, passwordRegex, passwordError);
@@ -245,16 +234,54 @@ function checkRegister(event){
 	if (isPasswordValid && isPasswordMatch) {
         // All fields are valid, proceed with form submission or API call
         console.log("Form is valid");
-        
-		const data = {
-			firstName,
-			lastName,
-			username,
-			password
-		};
-		
+		registerUser(firstName, lastName, login, password.value, event);
+
+		event.preventDefault(); // REMEMBER TO REMOVE THIS AFTER TESTING
+		//STOP event if an error occurs, can use a return val
+		// Could add redirect to login or call login endpoint after API call
+
     } else {
         // Prevent form submission if any field is invalid
         event.preventDefault();
     }
+}
+
+// Register user into database 
+async function registerUser(firstName, lastName, login, password, event){
+	// Gather user data from input fields 
+	const data = { 
+		firstName,
+		lastName,
+		login,
+		password
+	};	
+
+	try{
+		// Create POST request to register user 
+		const response = await fetch(`${urlBase}/Register.php`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json"},
+			body: JSON.stringify(data),
+		});
+
+		// Handle network error 
+		if(!response.ok) {
+			throw new Error(`HTTP error! Status: ${response.status}`);
+		}
+
+		// Parse JSON response 
+		const result = await response.json(); 
+
+		// Handle success and error
+		if(result.error === "") {
+			alert("Registration succesful!"); // Enters user into database 
+		} else if(result.error === "User already exists."){
+			alert(`${result.error} Please enter a different username.`);
+		} else{
+			alert("An unexpected error occurred. Please try again later.");
+		}
+	} catch (error) {
+		// Catch any other unexpected errors
+		alert("An unexpected error occurred. Please try again later.");
+	}
 }
