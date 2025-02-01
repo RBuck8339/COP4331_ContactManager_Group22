@@ -14,7 +14,7 @@ const phoneInput = document.getElementById('phone');
 const emailInput = document.getElementById('email');
 const addressInput = document.getElementById('address');
 
-/*
+
 // Prevents loading on local
 document.addEventListener("DOMContentLoaded", function () {
     fetch("LAMPAPI/checkSession.php", { 
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Ensure this code executes AFTER the session check
     initializeContactsPage();
-});*/
+});
 
 // Each of the below changes the current screen based on button press
 document.getElementById('settingsBtn').addEventListener('click', (e) => {
