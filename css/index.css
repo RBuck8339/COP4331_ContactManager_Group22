@@ -1,0 +1,17 @@
+html,
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+    height: 100%;
+    box-sizing: border-box;
+}
+
+:root {
+    --background-color: #2B2B2B;
+    --box-color: ;
+    --text-color: ;
+    --accent-color: ;
+    --border-color: ;
+}

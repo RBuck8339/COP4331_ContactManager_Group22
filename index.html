@@ -8,6 +8,7 @@
     <script type="text/javascript" src="js/login.js" defer></script>
     <link href="css/login.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <!-- Add language is english -->
 </head>
 
 <body>
@@ -25,14 +26,14 @@
             </div>
             <p id="menuName">Login</p>
             <form id="loginForm">
-            <div id="inputs">
+                <div id="inputs">
                     <input type="text" class="loginName" id="loginUsername" placeholder="Username" required>
                     <input type="password" id="loginPassword" id="loginPassword" placeholder="Password" required>
                     <span id="loginResult"></span>
                     <!-- Could do password forgotten: <a href="#" onclick="forgotPassword()">Forgot Password?</a> -->
-    
+
                     <button class="loginSubmit" id="login" type="submit">Login</button>
-            </div>
+                </div>
             </form>
         </div>
 
@@ -49,7 +50,7 @@
             </div>
             <p id="menuName">Register</p>
             <form id="registerForm">
-            <div id="inputs">
+                <div id="inputs">
                     <input type="text" id="userFirstName" placeholder="First Name" required>
                     <input type="text" id="userLastName" placeholder="Last Name" required>
                     <!-- Date of Birth? -->
@@ -67,7 +68,7 @@
                     <input type="password" id="registerPasswordConfirm" placeholder="Confirm Password" required>
                     <p class="hidden error" id="errorMsgPasswordConfirm">*Passwords do not match.</p>
                     <button class="loginSubmit" id="register" type="submit">Register</button>
-            </div>
+                </div>
             </form>
         </div>
         <div id="imageBox">
