@@ -7,14 +7,8 @@ const addContactForm = document.getElementById('addContactForm');
 const editContactForm = document.getElementById('editContactForm');
 const searchBar = document.getElementById('searchBar');
 
-// Contact form elements
-const firstNameInput = document.getElementById('firstName');
-const lastNameInput = document.getElementById('lastName');
-const phoneInput = document.getElementById('phone');
-const emailInput = document.getElementById('email');
-const addressInput = document.getElementById('address');
 
-/*
+
 // Prevents loading on local
 document.addEventListener("DOMContentLoaded", function () {
     fetch("LAMPAPI/checkSession.php", { 
@@ -37,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Ensure this code executes AFTER the session check
     initializeContactsPage();
-});*/
+});
 
 // Each of the below changes the current screen based on button press
 document.getElementById('settingsBtn').addEventListener('click', (e) => {
@@ -120,7 +114,15 @@ emailInput.addEventListener('blur', () => validateInput(emailInput, emailRegex, 
 phoneInput.addEventListener('blur', () => validateInput(phoneInput, phoneRegex, phoneError));
 
 // Submit event listener
-addContactForm.addEventListener("submit", (event) => {
+addContactForm.addEventListener("submit", async (event) => {
+    // Contact form elements
+    const firstNameInput = document.getElementById('firstName');
+    const lastNameInput = document.getElementById('lastName');
+    const phoneInput = document.getElementById('phone');
+    const emailInput = document.getElementById('email');
+    const addressInput = document.getElementById('address');
+
+
     // Validate inputs in case the user clicks submit without making changes
     validateInput(emailInput, emailRegex, emailError);
     validateInput(phoneInput, phoneRegex, phoneError);
@@ -131,8 +133,26 @@ addContactForm.addEventListener("submit", (event) => {
 
     if (isEmailValid && isPhoneValid) {
         // All fields are valid, proceed with form submission or API call
-        console.log("Form is valid");
-        // Add API call logic here
+        event.preventDefault();
+
+        let addData = {
+            firstName: document.getElementById('editFirstName').value,
+            lastName: document.getElementById('editLastName').value,
+            phone: document.getElementById('editPhone').value,
+            email: document.getElementById('editEmail').value,
+            address: document.getElementById('editAddress').value,
+            userId: user_id,
+        };
+
+        const response = await sendRequest({
+            endpoint: 'AddContact.php',
+            data: addData,
+            method_type: 'POST'
+        })
+
+        await getContacts();
+
+
     } else {
         // Prevent form submission if any field is invalid
         event.preventDefault();
@@ -142,56 +162,16 @@ addContactForm.addEventListener("submit", (event) => {
 
 // Limit to 50 per page
 // Get all contacts from the php endpoint
-function getContacts(){
-    // Just for testing the front end logic
-    let contacts = [
-        {
-            FirstName: 'John',
-            LastName: 'Doe',
-            Phone: '(239)555-5555',
-            Email: 'johndoe@gmail.com',
-            Address: '1234 E.S. St',
-            id: 3
-            //Notes: ['a', 'b', 'c']
-        },
-        {
-            FirstName: 'John',
-            LastName: 'Doe',
-            Phone: '(239)555-5555',
-            Email: 'johndoe@gmail.com',
-            Address: '1234 E.S. St',
-            id: 4
-            //Notes: ['a', 'b', 'c']
-        },
-        {
-            FirstName: 'John',
-            LastName: 'Doe',
-            Phone: '(239)555-5555',
-            Email: 'johndoe@gmail.com',
-            Address: '1234 E.S. St',
-            id: 5
-            //Notes: ['a', 'b', 'c']
-        },
-        {
-            FirstName: 'John',
-            LastName: 'Doe',
-            Phone: '(239)555-5555',
-            Email: 'johndoe@gmail.com',
-            Address: '1234 E.S. St',
-            id: 6
-            //Notes: ['a', 'b', 'c']
-        },
-        {
-            FirstName: 'John',
-            LastName: 'Doe',
-            Phone: '(239)555-5555',
-            Email: 'johndoe@gmail.com',
-            Address: '1234 E.S. St',
-            id: 7
-            //Notes: ['a', 'b', 'c']
-        },
-    ]; // Need to change to actually receive real data
-    // TODO API TEAM
+async function getContacts(searchData = {'search': ''}){  // Probably need to have this detect null input
+    searchData.userId = getUserId();
+
+    const response = await sendRequest({
+        endpoint: 'searchContacts.php',
+        data: searchData,
+        method_type: 'POST'
+    });  // Contacts to add to the table
+
+    // MOVE POST REQUESTS HERE
 
 
     contacts_data.innerHTML = '';  // Clear out the table before adding
@@ -202,7 +182,7 @@ function getContacts(){
         Object.keys(contact).forEach(key => {
             const cell = document.createElement('td');
 
-            if(key === "id") {
+            if(key === "contactId") {
                 // Set text content for string fields
                 cell.textContent = contact[key];
                 cell.classList.add('hiddenCell');
@@ -264,7 +244,6 @@ document.getElementById('editContactBtn').addEventListener('click', () => {
             div.appendChild(delete_button_img);
             cell.appendChild(div);
             row.appendChild(cell);
-
         }
     }
 })
@@ -281,45 +260,68 @@ function editContact(row){
     document.getElementById('editPhone').value = cells[3].innerText;
     document.getElementById('editAddress').value = cells[4].innerText;
     let contact_id = cells[5].innerText;
+    let user_id = getUserId();
 
     editContactWindow.classList.remove('hidden');
 
     let delete_button = document.getElementById('deleteContactBtn');
-    delete_button.onclick = () => {
-        deleteContact(row);
+    delete_button.onclick = async () => {
+        await deleteContact(row);
+        getContacts();  // Reload the entire table
     }
 
     let submit_button = document.getElementById('editContactForm');
-    submit_button.onsubmit = (e) => {
+    submit_button.onsubmit = async (e) => {
         e.preventDefault();
 
-        let contactData = {
+        let editData = {
             firstName: document.getElementById('editFirstName').value,
             lastName: document.getElementById('editLastName').value,
-            emailAddress: document.getElementById('editEmail').value,
-            phoneNumber: document.getElementById('editPhone').value,
+            email: document.getElementById('editEmail').value,
+            phone: document.getElementById('editPhone').value,
             address: document.getElementById('editAddress').value,
-            // Can add contact_id here 
+            userId: user_id,
+            contactId: contact_id
         };
 
-        // TODO API TEAM
-        // Add submit logic to update the users information
+        const response = await sendRequest({
+            endpoint: 'DeleteContact.php',
+            data: editData,
+            method_type: 'POST'
+        })
 
+        await getContacts();  // Reload the entire table
     }
 }
 
 
-function deleteContact(row){
+async function deleteContact(row){
+    // User data
+    let cells = row.getElementsByTagName('td');
+    let contactId = cells[5].innerText;
+    //let userId = getUserId();
 
+    // TODO API TEAM
+    // Add API call to delete the contact
+    const deleteData = {
+        'contactId' : contactId
+    }
+
+    const response = await sendRequest({
+        endpoint: 'DeleteContact.php',
+        data: deleteData,
+        method_type: 'POST'
+    })
+
+    await getContacts();  // Update the table
 }
 
-function addContact(data){
-
-}
 
 // Search Contacts
-searchBar.addEventListener('input', () => {
+searchBar.addEventListener('input', async () => {
     let curr_search = searchBar.value;
+    let user_id = getUserId(); 
+    let searchData;
 
     let name_parts = curr_search.split(' ');
     let first_name;
@@ -327,20 +329,73 @@ searchBar.addEventListener('input', () => {
 
     if(name_parts.length === 1){
         first_name = name_parts[0];
-        last_name = name_parts[0];
+
+        searchData = {
+            'search': first_name,
+            userId: user_id
+        }
     }
     // Just using first two
     else{
         first_name = name_parts[0];
         last_name = name_parts[1];
+
+        searchData = {
+            'search': first_name,
+            'search2': last_name,
+            userId: user_id
+        }
     }
 
-    console.log('First name is %s\n', first_name);
-    console.log('Last name is %s\n', last_name);
-
-    // Add logic for search call
-
+    getContacts(searchData);
 })
+
+// Handles API calls
+async function sendRequest({ endpoint, data, method_type}) {
+    try {
+        const response = await fetch(endpoint, {
+            method: method_type,  
+            headers: { 'Content-Type': 'application/json' },
+            body: method_type === 'POST' ? JSON.stringify(data) : null,  // Only include body for POST
+        });
+
+        // Ensure response is okay before proceeding
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const parsedData = await response.json();  // Parse JSON directly
+        console.log("Server Response:", parsedData);
+
+        if (parsedData.error) {
+            alert('Error receiving data from endpoint. Please try again later');
+            return null;
+        } 
+        else {
+            return parsedData;  // Update the contacts if we did not encounter an error
+        }
+    } 
+    catch (error) {
+        console.error("Fetch Error:", error);
+        alert("An error occurred. Please try again later.");
+        return null;
+    }
+}
+
+
+// Cookies Utils:
+function getUserId() {
+    let data = document.cookie;
+    let splits = data.split(","); // Split by commas
+    for (let i = 0; i < splits.length; i++) {
+        let thisOne = splits[i].trim();
+        let tokens = thisOne.split("="); // Split key=value
+        if (tokens[0] === "userId") {
+            return parseInt(tokens[1].trim()); // Convert to number
+        }
+    }
+    return null; // Return null if not found
+}
 
 
 // Makes sure it executes after loading

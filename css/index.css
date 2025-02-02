@@ -99,3 +99,25 @@ body {
     --button-hover-color: #1F8A70;
     --button-text-color: #FFFFFF;
 }
+
+
+/*Dark mode*/
+/*
+:root {
+    --background-color: #1B2B34;
+    --box-color: #1E3A5F;
+    --text-color: #E0F2F1;
+    --table-text-color: #AEEEEE;
+    --header-text-color: #AEEEEE;
+    --table-header-text-color: #E0F2F1;
+    --accent-color: #0096C7;
+    --border-color: #48CAE4;
+    --table-header: #005F77;
+    --table-row-1: #14495E;
+    --table-row-2: #113D50;
+    --button-color: #004366;
+    --button-alt-color: #0077B6;
+    --button-hover-color: #002F4B;
+    --button-text-color: #FFFFFF;
+}
+*/
