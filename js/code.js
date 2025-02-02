@@ -58,7 +58,15 @@ function loginUser(){
 		if (data.error) {
 		  alert(`Login failed: ${data.error}`);
 		} else {
-		  console.log(`Logged in successfully! Welcome ${data.firstName} ${data.lastName}`);
+		  // If login is successful, save cookies
+		  firstName = data.firstName;
+		  lastName = data.lastName;
+		  userId = data.userId;  // Assuming userId is returned by the server
+
+		  // Save session to cookies
+		  saveCookie(firstName, lastName, userId);
+
+		  // Notify user of login and redirect to contacts page
 		  window.location.href = 'contacts'; 
 		}
 	  } catch (err) {
@@ -70,17 +78,23 @@ function loginUser(){
 	  console.error("Error in fetch:", error);
 	  alert("An error occurred. Please try again later.");
 	});
+		
+	// Call readCookie to check for an existing session on page load
+	document.addEventListener("DOMContentLoaded", function () {
+		readCookie();
+	});
 }
 
 
 
-
-function saveCookie()
+function saveCookie(firstName, lastName, userId)
 {
 	let minutes = 20;
 	let date = new Date();
 	date.setTime(date.getTime()+(minutes*60*1000));	
 	document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ";expires=" + date.toGMTString();
+	console.log("Cookie saved");
+	console.log(document.cookie);
 }
 
 function readCookie()
