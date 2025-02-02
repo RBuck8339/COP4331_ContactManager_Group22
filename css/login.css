@@ -3,7 +3,8 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    background: linear-gradient(155deg, #2c3e50, #34495e, #4f87a6, #1abc9c, #f39c12);
+    color: var(--text-color);
+    background: var(--background-color);
 }
 
 #loginPage {
@@ -20,8 +21,8 @@ body {
     height: 75%;
     margin: auto;
     padding-top: 25px;
-    background-color: #f1c27d;
-    border: 3px solid white;
+    background-color: var(--box-color);
+    border: 3px solid var(--border-color);
     border-radius: 35px;
 }
 
@@ -38,21 +39,22 @@ body {
 
 #menuButtons button {
     padding: 10px 20px;
-    border: 1px solid black;
-    background-color: #4eabf8;
+    border: 1px solid var(--border-color);
+    background-color: var(--button-color);
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
+    color: var(--button-text-color);
     transition: background-color 0.3s ease;
 }
 
 #menuButtons button:hover {
-    background-color: #69f5fe;
+    background-color: var(--button-hover-color);
 }
 
 #menuButtons button.activePage {
-    background-color: #1abc9c;
-    color: white;
+    background-color: var(--button-alt-color);
+    color: var(--button-text-color);
 }
 
 #welcomeMsg {
@@ -61,7 +63,7 @@ body {
 }
 
 #welcomeTitle {
-    color: var(--accent-color);
+    color: var(--header-text-color);
     font-size: 32px;
     margin-bottom: 5px;
 }
@@ -82,39 +84,39 @@ body {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    /*Remove after verifying it looks good*/
 }
 
 input {
     padding: 10px;
     margin: 2% 5%;
     font-size: 16px;
-    border: 1px solid black;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
     box-sizing: border-box;
-    background: #7ec8e3;
+    color: var(--text-color);
+    background: var(--input-color);
 }
 
 #inputs input:focus {
-    border: 2px solid #78eec5;
+    border: 2px solid var(--border-color);
     outline: none;
 }
 
 #inputs button {
-    background-color: #4eabf8;
+    background-color: var(--button-color);
     width: 25%;
     padding: 10px;
     font-size: 14px;
-    color: black;
+    color: var(--button-text-color);
     margin-top: 5px;
-    border: 1px solid black;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 #inputs button:hover {
-    background-color: #69f5fe;
+    background-color: var(--button-hover-color);
 }
 
 #loginResult {
@@ -154,12 +156,7 @@ input {
     background: transparent;
 }
 
-#logoImage {
-    max-width: none;
-    max-height: none;
-    width: 100%;
-    height: 100%;
-}
+#logoImage {}
 
 .error {
     margin: 0px;

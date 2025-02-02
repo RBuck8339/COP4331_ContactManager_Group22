@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
     <title>COP 4331 LAMP Stack Demo</title>
@@ -6,15 +7,17 @@
     <!--<script type="text/javascript" src="js/code.js" defer></script>-->
     <script type="text/javascript" src="js/contacts.js" defer></script>
     <!--<script type="text/javascript" src="js/header.js" defer></script>-->
+    <link href="css/index.css" rel="stylesheet">
     <link href="css/contacts.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
     <div id="header">
-        <img id="logoImg" src="assets/images/logo.png" alt="Logo">
-        <p id="headerTitle">Contact Manager</p>
+        <img id="logoImg" src="assets/images/Logo750.png" alt="Logo">
+        <p id="headerTitle">Coastal Contacts</p>
         <div id="navButtons">
             <button type="button" id="settingsBtn" class="buttons">Settings</button>
             <button type="button" id="logoutBtn" class="buttons">Logout</button>
@@ -24,7 +27,7 @@
     <div id="contacts">
         <div id="utils">
             <button id="addContactBtn">
-                <img id="btnImg" src="assets/images/add_contact_2.png" alt="Add User" class="button-icon">
+                <img id="btnImg" src="assets/images/add_user.png" alt="Add User" class="button-icon">
             </button>
             <button id="editContactBtn">
                 <img id="btnImg" src="assets/images/edit_user.png" alt="Edit Users" class="button-icon">
@@ -81,17 +84,17 @@
             <button class="closeModal">&times;</button>
             <h2 id="modalHeader">Edit Existing Contact</h2>
             <form id="editContactForm">
-                <label for="firstName">First Name:</label>
+                <label for="editFirstName">First Name:</label>
                 <input type="text" id="editFirstName" name="firstName" required>
-                <label for="lastName">Last Name:</label>
+                <label for="editLastName">Last Name:</label>
                 <input type="text" id="editLastName" name="lastName" required>
-                <label for="email">Email:</label>
+                <label for="editEmail">Email:</label>
                 <input type="text" id="editEmail" name="emailAddress" required>
                 <p class="hidden" id="errorMsgEmail">*Please enter a valid email address</p>
-                <label for="Phone">Phone:</label>
+                <label for="editPhone">Phone:</label>
                 <input type="text" id="editPhone" name="phoneNumber" required>
                 <p class="hidden" id="errorMsgPhone">*Please enter a valid phone number</p>
-                <label for="Address">Address:</label>
+                <label for="editAddress">Address:</label>
                 <input type="text" id="editAddress" name="address" required>
 
                 <div id="buttonContainer">

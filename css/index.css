@@ -8,10 +8,94 @@ body {
     box-sizing: border-box;
 }
 
+
+/* Style 1*/
+
+
+/*
 :root {
-    --background-color: #2B2B2B;
-    --box-color: ;
-    --text-color: ;
-    --accent-color: ;
-    --border-color: ;
+    --background-color: #D9E4DD;
+    --box-color: #2C3E50;
+    --text-color: #FFFFFF;
+    --table-text-color: #43494B;
+    --header-text-color: #A8E6A2;
+    --accent-color: #00A8E8;
+    --border-color: #90E0EF;
+    --table-header: #00A8E8;
+    --table-row-1: #BFD7EA;
+    --table-row-2: #A9CCE3;
+    --button-color: #0077B6;
+    --button-alt-color: #2ab5d1;
+    --button-hover-color: #005F99;
+    --button-text-color: #FFFFFF;
+}
+*/
+
+
+/* Style 2 */
+
+
+/*
+:root {
+    --background-color: #F0F7F4;
+    --box-color: #1E3A5F;
+    --text-color: #FFFFFF;
+    --table-text-color: #2B3A42;
+    --header-text-color: #AEEEEE;
+    --table-header-text-color: #002627;
+    --accent-color: #0096C7;
+    --border-color: #48CAE4;
+    --table-header: #0096C7;
+    --table-row-1: #90E0EF;
+    --table-row-2: #CAF0F8;
+    --button-color: #0077B6;
+    --button-alt-color: #00B4D8;
+    --button-hover-color: #005F99;
+    --button-text-color: #FFFFFF;
+}
+*/
+
+
+/* Style 3 */
+
+
+/*
+:root {
+    --background-color: #A8DADC;
+    --box-color: #264653;
+    --text-color: #FFFFFF;
+    --table-text-color: #2F3E46;
+    --header-text-color: #F1FAEE;
+    --table-header-text-color: #FFFFFF;
+    --accent-color: #2A9D8F;
+    --border-color: #D8E2E8;
+    --table-header: #457B9D;
+    --table-row-1: #D0E8E6;
+    --table-row-2: #C5D9D8;
+    --button-color: #457B9D;
+    --button-alt-color: #2A9D8F;
+    --button-hover-color: #1F8A70;
+    --button-text-color: #FFFFFF;
+}
+*/
+
+
+/* Style 3 Updated */
+
+:root {
+    --background-color: #A0B9C8;
+    --box-color: #2A4D53;
+    --text-color: #FFFFFF;
+    --table-text-color: #2F3E46;
+    --header-text-color: #F1FAEE;
+    --table-header-text-color: #FFFFFF;
+    --accent-color: #2A9D8F;
+    --border-color: #D8E2E8;
+    --table-header: #457B9D;
+    --table-row-1: #D0E8E6;
+    --table-row-2: #C5D9D8;
+    --button-color: #457B9D;
+    --button-alt-color: #2A9D8F;
+    --button-hover-color: #1F8A70;
+    --button-text-color: #FFFFFF;
 }
