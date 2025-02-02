@@ -74,6 +74,7 @@ function loginUser(){
 		alert("Failed to parse server response.");
 	  }
 	})
+	// Detect any fetch or CORS errors
 	.catch(error => {
 	  console.error("Error in fetch:", error);
 	  alert("An error occurred. Please try again later.");
@@ -99,34 +100,41 @@ function saveCookie(firstName, lastName, userId)
 
 function readCookie()
 {
-	userId = -1;
+	userId = -1; // Default userId
+
+	// Get cookie string and split into key-value pairs 
 	let data = document.cookie;
-	let splits = data.split(",");
+	let splits = data.split(";");
 	for(var i = 0; i < splits.length; i++) 
 	{
+		// Remove trialing white spices and split key-value pairs
 		let thisOne = splits[i].trim();
 		let tokens = thisOne.split("=");
-		if( tokens[0] == "firstName" )
+
+		// Set fields accordingly 
+		if(tokens[0] == "firstName")
 		{
 			firstName = tokens[1];
 		}
-		else if( tokens[0] == "lastName" )
+		else if(tokens[0] == "lastName")
 		{
 			lastName = tokens[1];
 		}
-		else if( tokens[0] == "userId" )
+		else if(tokens[0] == "userId")
 		{
-			userId = parseInt( tokens[1].trim() );
+			userId = parseInt(tokens[1].trim());
 		}
 	}
 	
-	if( userId < 0 )
+	//If userId is not valid, redirect to login
+	if(userId < 0)
 	{
 		window.location.href = "index";
 	}
+	// Update UI to confirm login status
 	else
 	{
-		document.getElementById("userName").innerHTML = "Logged in as " + firstName + " " + lastName;
+		console.log("Logged in as " + firstName + " " + lastName);
 	}
 }
 
