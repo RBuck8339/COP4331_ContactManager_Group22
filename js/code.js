@@ -25,7 +25,7 @@ registerForm.addEventListener("submit", (event) => {
 
 const loginForm = document.getElementById('loginForm');
 loginForm.addEventListener("submit", (event) => {
-	loginUser(event)
+	loginUser();
 	event.preventDefault();
 });
 
@@ -56,18 +56,20 @@ function loginUser(){
 	  try {
 		const data = JSON.parse(text);  // Try parsing the response as JSON
 		if (data.error) {
-		  alert(`Login failed: ${data.error}`);
+		  alert("Account does not exist");
+		  toggleScreen(false);
 		} else {
-		  // If login is successful, save cookies
-		  firstName = data.firstName;
-		  lastName = data.lastName;
-		  userId = data.userId;  // Assuming userId is returned by the server
+			// If login is successful, save cookies
+			firstName = data.firstName;
+			lastName = data.lastName;
+			userId = data.id;  // Assuming userId is returned by the server
 
-		  // Save session to cookies
-		  saveCookie(firstName, lastName, userId);
+			// Save session to cookies
+			saveCookie(firstName, lastName, userId);
+			readCookie(); // read cookie in console to confirm login
 
-		  // Notify user of login and redirect to contacts page
-		  window.location.href = 'contacts'; 
+			// Notify user of login and redirect to contacts page
+			// window.location.href = "contacts";
 		}
 	  } catch (err) {
 		console.error("Error parsing response:", err);
@@ -83,11 +85,16 @@ function loginUser(){
 
 function saveCookie(firstName, lastName, userId)
 {
+	// Set Date
 	let minutes = 20;
 	let date = new Date();
 	date.setTime(date.getTime()+(minutes*60*1000));	
-	document.cookie = `firstName=${firstName}; lastName=${lastName}; userId=${userId}; expires=${date.toUTCString()}; path=/`;	
-	console.log("Cookie saved");
+	const expires = `expires=${date.toUTCString()}; path=/`;
+
+	// Set each cookie separately
+	document.cookie = `firstName=${firstName}; ${expires}`;
+	document.cookie = `lastName=${lastName}; ${expires}`;
+	document.cookie = `userId=${userId}; ${expires}`;	
 	console.log(document.cookie);
 }
 
@@ -103,6 +110,7 @@ function readCookie()
 		// Remove trialing white spices and split key-value pairs
 		let thisOne = splits[i].trim();
 		let tokens = thisOne.split("=");
+		console.log(tokens);
 
 		// Set fields accordingly 
 		if(tokens[0] == "firstName")
@@ -122,12 +130,11 @@ function readCookie()
 	//If userId is not valid, redirect to login
 	if(userId < 0)
 	{
-		window.location.href = "index";
+		console.log("Invalid cookie")
 	}
 	// Update UI to confirm login status
 	else
 	{
-		console.log("Cookie has been read");
 		console.log("Logged in as " + firstName + " " + lastName);
 	}
 }
