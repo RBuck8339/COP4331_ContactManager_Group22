@@ -3,6 +3,20 @@ document.addEventListener("DOMContentLoaded", function () {
     if (window.location.hostname === "contactsbycoastal.com") {
         window.location.href = "http://www.contactsbycoastal.com" + window.location.pathname + window.location.search;
     }
+    // Register user upon clicking register
+    const registerForm =  document.getElementById('registerForm');
+    registerForm.addEventListener("submit", (event) => {
+	    checkRegister(event);
+    });
+
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener("submit", (event) => {
+        loginUser();
+        event.preventDefault();
+    });
+
+    password.addEventListener('blur', () => validatePassword(password, passwordRegex, passwordError));
+    passwordConfirm.addEventListener('blur', () => confirmPassword(passwordConfirm, password.value, passwordConfirm.value, passwordConfirmErorr));
 });
 
 const urlBase = 'http://www.contactsbycoastal.com/LAMPAPI';
@@ -17,17 +31,7 @@ const passwordConfirmErorr = document.getElementById('errorMsgPasswordConfirm');
 const password = document.getElementById('registerPassword');
 const passwordConfirm = document.getElementById('registerPasswordConfirm');
 
-// Register user upon clicking register
-const registerForm =  document.getElementById('registerForm');
-registerForm.addEventListener("submit", (event) => {
-	checkRegister(event);
-});
 
-const loginForm = document.getElementById('loginForm');
-loginForm.addEventListener("submit", (event) => {
-	loginUser();
-	event.preventDefault();
-});
 
 function loginUser(){	
 
@@ -249,9 +253,6 @@ function confirmPassword(input, password1, password2, errorMsg){
 
 // Regex to validate password
 const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>])(?=.*[A-Za-z])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$/;
-
-password.addEventListener('blur', () => validatePassword(password, passwordRegex, passwordError));
-passwordConfirm.addEventListener('blur', () => confirmPassword(passwordConfirm, password.value, passwordConfirm.value, passwordConfirmErorr));
 
 // Check if we can register the user 
 function checkRegister(event){

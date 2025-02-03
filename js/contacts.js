@@ -6,6 +6,7 @@ const closeModalBtns = document.querySelectorAll('.closeModal');
 const addContactForm = document.getElementById('addContactForm');
 const editContactForm = document.getElementById('editContactForm');
 const searchBar = document.getElementById('searchBar');
+let show_edit_column = false
 
 // Prevents loading on local
 document.addEventListener("DOMContentLoaded", function () {
@@ -21,14 +22,17 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .then(data => {
         console.log("User authenticated:", data);
+        userId = data.userId;
+        
+        // Ensure this code executes AFTER the session check and authentication
+        getContacts();
     })
     .catch(error => {
         console.error("Not logged in. Redirecting...");
         window.location.href = "login"; 
     });
 
-    // Ensure this code executes AFTER the session check
-    initializeContactsPage();
+    
 });
 
 // Each of the below changes the current screen based on button press
@@ -58,118 +62,179 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
         console.error("Logout button not found.");
     }
-});
 
 
-// Allows for showing and hiding the modals
-addContactBtn.addEventListener('click', () => {
-    addContactWindow.classList.remove('hidden');
-});
-
-// For closing the modals
-closeModalBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-        addContactWindow.classList.add('hidden');
-        editContactWindow.classList.add('hidden');
+    // Allows for showing and hiding the modals
+    addContactBtn.addEventListener('click', () => {
+        addContactWindow.classList.remove('hidden');
     });
-});
-// If the user clicks off the modal
-addContactWindow.addEventListener('mousedown', (e) => {
-    if(e.target === addContactWindow){
-        addContactWindow.classList.add('hidden');
+
+    // For closing the modals
+    closeModalBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            addContactWindow.classList.add('hidden');
+            editContactWindow.classList.add('hidden');
+        });
+    });
+    // If the user clicks off the modal
+    addContactWindow.addEventListener('mousedown', (e) => {
+        if(e.target === addContactWindow){
+            addContactWindow.classList.add('hidden');
+        }
+    });
+    editContactWindow.addEventListener('mousedown', (e) => {
+        if(e.target === editContactWindow){
+            editContactWindow.classList.add('hidden');
+        }
+    })
+
+
+    // INPUT VALIDITY
+
+    // Error prompts
+    const emailError = document.getElementById('errorMsgEmail');
+    const phoneError = document.getElementById('errorMsgPhone');
+
+    // Email and phone regex
+    const emailRegex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+    const phoneRegex = /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
+
+    // Input validation function
+    function validateInput(input, regex, errorMsg) {
+        if (regex.test(input.value)) {
+            errorMsg.classList.add('hidden'); // Hide error message if valid
+            input.classList.remove('border-red'); // Remove error outline
+        } else {
+            errorMsg.classList.remove('hidden'); // Show error message if invalid
+            input.classList.add('border-red'); // Add error outline
+        }
     }
-});
-editContactWindow.addEventListener('mousedown', (e) => {
-    if(e.target === editContactWindow){
-        editContactWindow.classList.add('hidden');
-    }
-})
 
-
-// INPUT VALIDITY
-
-// Error prompts
-const emailError = document.getElementById('errorMsgEmail');
-const phoneError = document.getElementById('errorMsgPhone');
-
-// Email and phone regex
-const emailRegex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
-const phoneRegex = /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
-
-// Input validation function
-function validateInput(input, regex, errorMsg) {
-    if (regex.test(input.value)) {
-        errorMsg.classList.add('hidden'); // Hide error message if valid
-        input.classList.remove('border-red'); // Remove error outline
-    } else {
-        errorMsg.classList.remove('hidden'); // Show error message if invalid
-        input.classList.add('border-red'); // Add error outline
-    }
-}
-
-// Evaluate input after field is manipulated
-emailInput.addEventListener('blur', () => validateInput(emailInput, emailRegex, emailError));
-phoneInput.addEventListener('blur', () => validateInput(phoneInput, phoneRegex, phoneError));
-
-// Submit event listener
-addContactForm.addEventListener("submit", async (event) => {
-    // Contact form elements
-    const firstNameInput = document.getElementById('firstName');
-    const lastNameInput = document.getElementById('lastName');
     const phoneInput = document.getElementById('phone');
     const emailInput = document.getElementById('email');
-    const addressInput = document.getElementById('address');
+
+    // Evaluate input after field is manipulated
+    emailInput.addEventListener('blur', () => validateInput(emailInput, emailRegex, emailError));
+    phoneInput.addEventListener('blur', () => validateInput(phoneInput, phoneRegex, phoneError));
+
+    // Submit event listener
+    addContactForm.addEventListener("submit", async (event) => {
+        // Contact form elements
+        const firstNameInput = document.getElementById('firstName');
+        const lastNameInput = document.getElementById('lastName');
+        const addressInput = document.getElementById('address');
+        //const user_id = userId;
 
 
-    // Validate inputs in case the user clicks submit without making changes
-    validateInput(emailInput, emailRegex, emailError);
-    validateInput(phoneInput, phoneRegex, phoneError);
+        // Validate inputs in case the user clicks submit without making changes
+        validateInput(emailInput, emailRegex, emailError);
+        validateInput(phoneInput, phoneRegex, phoneError);
 
-    // Check if all error messages are hidden
-    const isEmailValid = emailError.classList.contains('hidden');
-    const isPhoneValid = phoneError.classList.contains('hidden');
+        // Check if all error messages are hidden
+        const isEmailValid = emailError.classList.contains('hidden');
+        const isPhoneValid = phoneError.classList.contains('hidden');
 
-    if (isEmailValid && isPhoneValid) {
-        // All fields are valid, proceed with form submission or API call
-        event.preventDefault();
+        if (isEmailValid && isPhoneValid) {
+            // All fields are valid, proceed with form submission or API call
+            event.preventDefault();
 
-        let addData = {
-            firstName: document.getElementById('editFirstName').value,
-            lastName: document.getElementById('editLastName').value,
-            phone: document.getElementById('editPhone').value,
-            email: document.getElementById('editEmail').value,
-            address: document.getElementById('editAddress').value,
-            userId: user_id,
-        };
+            let addData = {
+                firstName: firstNameInput.value,
+                lastName: lastNameInput.value,
+                phone: phoneInput.value,
+                email: emailInput.value,
+                address: addressInput.value,
+                userId: userId,
+            };
 
-        const response = await sendRequest({
-            endpoint: 'AddContact.php',
-            data: addData,
-            method_type: 'POST'
-        })
+            const response = await sendRequest({
+                endpoint: 'AddContact.php',
+                data: addData,
+                method_type: 'POST'
+            })
 
-        await getContacts();
+            await getContacts();
 
+        } 
+        else {
+            // Prevent form submission if any field is invalid
+            event.preventDefault();
+        }
+    });
 
-    } else {
-        // Prevent form submission if any field is invalid
-        event.preventDefault();
-    }
+    document.getElementById('editContactBtn').addEventListener('click', () => {
+        let editColumn = document.getElementById('editColumnHeader');
+        let tableHeader = document.getElementById('contactsHeader'); // Select the existing row inside the thead
+
+        if(editColumn){
+            editColumn.remove();
+            // Remove associated rows in this column
+            for(let row of contacts_data.children){
+                row.deleteCell(-1);
+            }
+            show_edit_column = false;  // Make sure the column is hidden
+        }
+        else{
+            let header = document.createElement("th");
+            header.textContent = 'Edit Contact';
+            header.id = 'editColumnHeader';
+            tableHeader.appendChild(header);
+
+            for(let row of contacts_data.children){
+                createEditCells(row);
+            }
+            show_edit_column = true;  // Make sure the column shows next time we load contacts
+        }
+    })
+
+    // Search Contacts
+    searchBar.addEventListener('input', async () => {
+        let curr_search = searchBar.value;
+        //let user_id = userId; 
+        let searchData;
+
+        let name_parts = curr_search.split(' ');
+        let first_name;
+        let last_name;
+
+        if(name_parts.length === 1){
+            first_name = name_parts[0];
+
+            searchData = {
+                'search': first_name,
+                userId: userId
+            }
+        }
+        // Just using first two
+        else{
+            first_name = name_parts[0];
+            last_name = name_parts[1];
+
+            searchData = {
+                'search': first_name,
+                'search2': last_name,
+                userId: userId
+            }
+        }
+
+        getContacts(searchData);
+    })
 });
 
 
 // Limit to 50 per page
 // Get all contacts from the php endpoint
 async function getContacts(searchData = {'search': ''}){  // Probably need to have this detect null input
-    searchData.userId = getUserId();
+    searchData.userId = userId;
+    console.log(searchData.userId);
 
-    const response = await sendRequest({
-        endpoint: 'searchContacts.php',
+    let contacts = await sendRequest({
+        endpoint: 'SearchContacts.php',
         data: searchData,
         method_type: 'POST'
     });  // Contacts to add to the table
 
-    // MOVE POST REQUESTS HERE
+    if(!contacts) contacts = [];  // No contacts to display
 
 
     contacts_data.innerHTML = '';  // Clear out the table before adding
@@ -183,7 +248,7 @@ async function getContacts(searchData = {'search': ''}){  // Probably need to ha
             if(key === "contactId") {
                 // Set text content for string fields
                 cell.textContent = contact[key];
-                cell.classList.add('hiddenCell');
+                cell.classList.add('hiddenCell');  // If we are hiding the column (false by default)
             }
             // We keep the id cell hidden but available for reference
             else{
@@ -193,58 +258,42 @@ async function getContacts(searchData = {'search': ''}){  // Probably need to ha
             row.appendChild(cell);
         });
 
+        // Since we need to create the column
+        if (show_edit_column) {
+            createEditCells(row);
+        }
+
         contacts_data.appendChild(row);
     });
 }
 
 
-document.getElementById('editContactBtn').addEventListener('click', () => {
-    let editColumn = document.getElementById('editColumnHeader');
-    let tableHeader = document.getElementById('contactsHeader'); // Select the existing row inside the thead
+function createEditCells(row){
+    let cell = document.createElement('td');
+    let div = document.createElement('div');
+    
+    div.id = 'editButtons';
 
-    if(editColumn){
-        editColumn.remove();
-        // Remove associated rows in this column
-        for(let row of contacts_data.children){
-            row.deleteCell(-1);
-        }
-    }
-    else{
-        let header = document.createElement("th");
-        header.textContent = 'Edit Contact';
-        header.id = 'editColumnHeader';
-        tableHeader.appendChild(header);
+    let edit_button_img = document.createElement('img');
+    edit_button_img.src = 'assets/images/edit.png';
+    edit_button_img.alt = 'Edit Contact';
+    edit_button_img.onclick = () => {
+        editContact(row);
+    };
 
-        for(let row of contacts_data.children){
-            let cell = document.createElement('td');
-            let div = document.createElement('div');
-            
-            div.id = 'editButtons';
+    let delete_button_img = document.createElement('img');
+    delete_button_img.src = 'assets/images/trash.png';
+    delete_button_img.alt = 'Delete Contact';
+    delete_button_img.onclick = () => {
+        deleteContact(row);
+    };
 
-            // Edit button as an image
-            let edit_button_img = document.createElement('img');
-            edit_button_img.src = 'assets/images/edit.png';
-            edit_button_img.alt = 'Edit Contact';
-            edit_button_img.onclick = () => {
-                editContact(row);
-            }
+    div.appendChild(edit_button_img);
+    div.appendChild(delete_button_img);
+    cell.appendChild(div);
+    row.appendChild(cell);
+}
 
-            // Delete button as an image
-            let delete_button_img = document.createElement('img');
-            delete_button_img.src = 'assets/images/trash.png';
-            delete_button_img.alt = 'Delete Contact';
-            delete_button_img.onclick = () => {
-                deleteContact(row);
-            }
-
-            // Append images directly
-            div.appendChild(edit_button_img);
-            div.appendChild(delete_button_img);
-            cell.appendChild(div);
-            row.appendChild(cell);
-        }
-    }
-})
 
 
 // Make the pop up for editing a contact and add the information immediately
@@ -258,7 +307,7 @@ function editContact(row){
     document.getElementById('editPhone').value = cells[3].innerText;
     document.getElementById('editAddress').value = cells[4].innerText;
     let contact_id = cells[5].innerText;
-    let user_id = getUserId();
+    //let user_id = getUserId();
 
     editContactWindow.classList.remove('hidden');
 
@@ -278,12 +327,13 @@ function editContact(row){
             email: document.getElementById('editEmail').value,
             phone: document.getElementById('editPhone').value,
             address: document.getElementById('editAddress').value,
-            userId: user_id,
+            userId: userId,
             contactId: contact_id
         };
 
+
         const response = await sendRequest({
-            endpoint: 'DeleteContact.php',
+            endpoint: 'EditContact.php',
             data: editData,
             method_type: 'POST'
         })
@@ -297,10 +347,7 @@ async function deleteContact(row){
     // User data
     let cells = row.getElementsByTagName('td');
     let contactId = cells[5].innerText;
-    //let userId = getUserId();
 
-    // TODO API TEAM
-    // Add API call to delete the contact
     const deleteData = {
         'contactId' : contactId
     }
@@ -315,43 +362,11 @@ async function deleteContact(row){
 }
 
 
-// Search Contacts
-searchBar.addEventListener('input', async () => {
-    let curr_search = searchBar.value;
-    let user_id = getUserId(); 
-    let searchData;
-
-    let name_parts = curr_search.split(' ');
-    let first_name;
-    let last_name;
-
-    if(name_parts.length === 1){
-        first_name = name_parts[0];
-
-        searchData = {
-            'search': first_name,
-            userId: user_id
-        }
-    }
-    // Just using first two
-    else{
-        first_name = name_parts[0];
-        last_name = name_parts[1];
-
-        searchData = {
-            'search': first_name,
-            'search2': last_name,
-            userId: user_id
-        }
-    }
-
-    getContacts(searchData);
-})
 
 // Handles API calls
 async function sendRequest({ endpoint, data, method_type}) {
     try {
-        const response = await fetch(endpoint, {
+        const response = await fetch(`${urlBase}/${endpoint}`, {
             method: method_type,  
             headers: { 'Content-Type': 'application/json' },
             body: method_type === 'POST' ? JSON.stringify(data) : null,  // Only include body for POST
@@ -363,14 +378,15 @@ async function sendRequest({ endpoint, data, method_type}) {
         }
 
         const parsedData = await response.json();  // Parse JSON directly
-        console.log("Server Response:", parsedData);
 
-        if (parsedData.error) {
-            alert('Error receiving data from endpoint. Please try again later');
+        // We don't care if the error is no records found
+        if (parsedData.error && parsedData.error !== 'No Records Found') {
+            console.error('Error receiving data from endpoint. Please try again later');
             return null;
         } 
         else {
-            return parsedData;  // Update the contacts if we did not encounter an error
+            let return_data = parsedData.results;
+            return return_data;  // Update the contacts if we did not encounter an error
         }
     } 
     catch (error) {
@@ -379,24 +395,3 @@ async function sendRequest({ endpoint, data, method_type}) {
         return null;
     }
 }
-
-
-// Cookies Utils:
-function getUserId() {
-    let data = document.cookie;
-    let splits = data.split(","); // Split by commas
-    for (let i = 0; i < splits.length; i++) {
-        let thisOne = splits[i].trim();
-        let tokens = thisOne.split("="); // Split key=value
-        if (tokens[0] === "userId") {
-            return parseInt(tokens[1].trim()); // Convert to number
-        }
-    }
-    return null; // Return null if not found
-}
-
-
-// Makes sure it executes after loading
-document.addEventListener('DOMContentLoaded', () => {
-    getContacts();
-});
