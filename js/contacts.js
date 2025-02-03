@@ -9,31 +9,8 @@ const searchBar = document.getElementById('searchBar');
 let show_edit_column = false
 
 // Prevents loading on local
-document.addEventListener("DOMContentLoaded", function () {
-    fetch("LAMPAPI/checkSession.php", { 
-        method: "GET",
-        credentials: "same-origin" // Ensures cookies/session are sent
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Session check failed");
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log("User authenticated:", data);
-        userId = data.userId;
-        
-        // Ensure this code executes AFTER the session check and authentication
-        getContacts();
-    })
-    .catch(error => {
-        console.error("Not logged in. Redirecting...");
-        window.location.href = "login"; 
-    });
-
-    
-});
+readCookie();
+console.log(`userId = ${userId}`);
 
 // Each of the below changes the current screen based on button press
 document.getElementById('settingsBtn').addEventListener('click', (e) => {
