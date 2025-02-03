@@ -7,7 +7,7 @@ const addContactForm = document.getElementById('addContactForm');
 const editContactForm = document.getElementById('editContactForm');
 const searchBar = document.getElementById('searchBar');
 
-
+readCookie();
 
 // Prevents loading on local
 document.addEventListener("DOMContentLoaded", function () {

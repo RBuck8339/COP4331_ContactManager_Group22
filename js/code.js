@@ -29,11 +29,6 @@ loginForm.addEventListener("submit", (event) => {
 	event.preventDefault();
 });
 
-// Call readCookie to check for an existing session on page load
-document.addEventListener("DOMContentLoaded", function () {
-	readCookie();
-});
-
 function loginUser(){	
 
 	// Fetch login information
@@ -132,6 +127,7 @@ function readCookie()
 	// Update UI to confirm login status
 	else
 	{
+		console.log("Cookie has been read");
 		console.log("Logged in as " + firstName + " " + lastName);
 	}
 }
