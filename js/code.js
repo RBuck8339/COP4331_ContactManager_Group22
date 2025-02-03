@@ -29,6 +29,11 @@ loginForm.addEventListener("submit", (event) => {
 	event.preventDefault();
 });
 
+// Call readCookie to check for an existing session on page load
+document.addEventListener("DOMContentLoaded", function () {
+	readCookie();
+});
+
 function loginUser(){	
 
 	// Fetch login information
@@ -78,11 +83,6 @@ function loginUser(){
 	.catch(error => {
 	  console.error("Error in fetch:", error);
 	  alert("An error occurred. Please try again later.");
-	});
-		
-	// Call readCookie to check for an existing session on page load
-	document.addEventListener("DOMContentLoaded", function () {
-		readCookie();
 	});
 }
 
