@@ -56,8 +56,7 @@ function loginUser(){
 	  try {
 		const data = JSON.parse(text);  // Try parsing the response as JSON
 		if (data.error) {
-		  alert("Account does not exist");
-		  toggleScreen(false);
+		  alert("Incorrect username or password.");
 		} else {
 			// If login is successful, save cookies
 			firstName = data.firstName;
@@ -69,7 +68,7 @@ function loginUser(){
 			readCookie(); // read cookie in console to confirm login
 
 			// Notify user of login and redirect to contacts page
-			// window.location.href = "contacts";
+			window.location.href = "contacts";
 		}
 	  } catch (err) {
 		console.error("Error parsing response:", err);
