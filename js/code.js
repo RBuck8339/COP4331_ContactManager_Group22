@@ -86,14 +86,12 @@ function loginUser(){
 	});
 }
 
-
-
 function saveCookie(firstName, lastName, userId)
 {
 	let minutes = 20;
 	let date = new Date();
 	date.setTime(date.getTime()+(minutes*60*1000));	
-	document.cookie = "firstName=" + firstName + ",lastName=" + lastName + ",userId=" + userId + ";expires=" + date.toGMTString();
+	document.cookie = `firstName=${firstName}; lastName=${lastName}; userId=${userId}; expires=${date.toUTCString()}; path=/`;	
 	console.log("Cookie saved");
 	console.log(document.cookie);
 }
@@ -313,6 +311,7 @@ async function registerUser(firstName, lastName, login, password, event){
 		// Handle success and error
 		if(result.error === "") {
 			alert("Registration succesful!"); // Enters user into database 
+			window.location.href = 'index'; // Redirect to Login Page
 		} else if(result.error === "User already exists."){
 			alert(`${result.error} Please enter a different username.`);
 		} else{
