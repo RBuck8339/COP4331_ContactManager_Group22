@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Not logged in. Redirecting...");
         window.location.href = "login"; 
     });
-
+    
     // Ensure this code executes AFTER the session check
     initializeContactsPage();
 });
