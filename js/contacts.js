@@ -9,6 +9,34 @@ const searchBar = document.getElementById('searchBar');
 
 let show_edit_column = false;
 
+function formatPhoneNumber(phone) {
+    phone = phone.replace(/\D/g, ""); // Remove non-numeric characters
+    if (phone.length === 10) {
+        return phone.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3"); // Format as ###-###-####
+    }
+    return phone; // Return unformatted if not 10 digits
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const phoneInput = document.getElementById("phone");
+    const editPhoneInput = document.getElementById("editPhone");
+
+    if (phoneInput) {
+        phoneInput.addEventListener("input", function () {
+            this.value = formatPhoneNumber(this.value);
+        });
+    }
+
+    if (editPhoneInput) {
+        editPhoneInput.addEventListener("input", function () {
+            this.value = formatPhoneNumber(this.value);
+        });
+    }
+
+    getContacts(); // Load contacts on page load
+});
+
+
 // Prevents loading on local
 readCookie();
 console.log(`userId = ${userId}`);
@@ -30,7 +58,9 @@ function displayContacts() {
             if (key === "contactId") {
                 cell.textContent = contact[key];
                 cell.classList.add('hiddenCell');  
-            } else {
+            } else if (key === "phone") {  
+                cell.textContent = formatPhoneNumber(contact[key]);  // Format phone numbers
+            }else {
                 cell.textContent = contact[key]; 
             }
 
@@ -162,7 +192,7 @@ document.addEventListener("DOMContentLoaded", function () {
             let addData = {
                 firstName: firstNameInput.value,
                 lastName: lastNameInput.value,
-                phone: phoneInput.value,
+                phone: phoneInput.value.replace(/\D/g, ""), // Remove dashes before sending,
                 email: emailInput.value,
                 address: addressInput.value,
                 userId: userId,
@@ -345,7 +375,7 @@ function editContact(row){
         let editData = {
             firstName: document.getElementById('editFirstName').value,
             lastName: document.getElementById('editLastName').value,
-            phone: document.getElementById('editPhone').value,
+            phone: document.getElementById('editPhone').value.replace(/\D/g, ""), // Remove formatting before sending,
             email: document.getElementById('editEmail').value,
             address: document.getElementById('editAddress').value,
             userId: userId,
