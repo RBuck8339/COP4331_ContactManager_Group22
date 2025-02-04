@@ -323,8 +323,8 @@ function editContact(row){
     // Fill in current data
     document.getElementById('editFirstName').value = cells[0].innerText;
     document.getElementById('editLastName').value = cells[1].innerText;
-    document.getElementById('editEmail').value = cells[2].innerText;
-    document.getElementById('editPhone').value = cells[3].innerText;
+    document.getElementById('editPhone').value = cells[2].innerText;
+    document.getElementById('editEmail').value = cells[3].innerText;
     document.getElementById('editAddress').value = cells[4].innerText;
     let contact_id = cells[5].innerText;
     //let user_id = getUserId();
@@ -333,8 +333,9 @@ function editContact(row){
 
     let delete_button = document.getElementById('deleteContactBtn');
     delete_button.onclick = async () => {
-        await deleteContact(row);
+        await deleteContact(contact_id);
         getContacts();  // Reload the entire table
+        editContactWindow.classList.add('hidden');  // Close modal
     }
 
     let submit_button = document.getElementById('editContactForm');
@@ -344,8 +345,8 @@ function editContact(row){
         let editData = {
             firstName: document.getElementById('editFirstName').value,
             lastName: document.getElementById('editLastName').value,
-            email: document.getElementById('editEmail').value,
             phone: document.getElementById('editPhone').value,
+            email: document.getElementById('editEmail').value,
             address: document.getElementById('editAddress').value,
             userId: userId,
             contactId: contact_id
@@ -358,27 +359,31 @@ function editContact(row){
             method_type: 'POST'
         })
 
-        await getContacts();  // Reload the entire table
-    }
+        if (response && !response.error) {
+            await getContacts();  // Reload table
+            editContactWindow.classList.add('hidden');  // Close modal
+        } else {
+            alert("Error updating contact: " + (response.error || "Unknown error"));
+        }
+    };
 }
 
 
-async function deleteContact(row){
-    // User data
-    let cells = row.getElementsByTagName('td');
-    let contactId = cells[5].innerText;
-
-    const deleteData = {
-        'contactId' : contactId
-    }
+// Delete contact function
+async function deleteContact(contactId) {
+    const deleteData = { contactId };
 
     const response = await sendRequest({
         endpoint: 'DeleteContact.php',
         data: deleteData,
         method_type: 'POST'
-    })
+    });
 
-    await getContacts();  // Update the table
+    if (response && !response.error) {
+        await getContacts();
+    } else {
+        alert("Error deleting contact: " + (response.error || "Unknown error"));
+    }
 }
 
 

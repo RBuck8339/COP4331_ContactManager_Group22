@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>COP 4331 LAMP Stack Demo</title>
+    <script type="text/javascript" src="js/md5.js" defer></script>
+    <script type="text/javascript" src="js/code.js" defer></script>
+    <script type="text/javascript" src="js/login.js" defer></script>
+    <link href="css/index.css" rel="stylesheet">
+    <link href="css/login.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Coastal Contacts helps you manage and organize your contacts with an easy-to-use interface. Add, edit, and delete contacts with ease in a coastal-inspired atmosphere.">
+</head>
+
+<body>
+    <div id="loginPage">
+
+        <div id="loginMenu" class="loginBox">
+            <div id="menuButtons">
+                <button id="toLoginBtn" class="activePage">Login</button>
+                <button id="toRegisterBtn">Register</button>
+            </div>
+
+            <div id="welcomeMsg">
+                <h1 id="welcomeTitle">Coastal Contacts</h1>
+                <p id="welcomeDesc">Manage your contacts efficiently and securely</p>
+            </div>
+            <p id="menuName">Login</p>
+            <form id="loginForm">
+                <div id="inputs">
+                    <input type="text" class="loginName" id="loginUsername" placeholder="Username" required>
+                    <input type="password" id="loginPassword" id="loginPassword" placeholder="Password" required>
+                    <span id="loginResult"></span>
+                    <button class="loginSubmit" id="login" type="submit">Login</button>
+                </div>
+            </form>
+        </div>
+
+
+        <div id="registerMenu" class="loginBox hidden">
+            <div id="menuButtons">
+                <button id="toLoginBtnReg">Login</button>
+                <button id="toRegisterBtnReg" class="activePage">Register</button>
+            </div>
+
+            <div id="welcomeMsg">
+                <h1 id="welcomeTitle">Coastal Contacts</h1>
+                <p id="welcomeDesc">Manage your contacts efficiently and securely</p>
+            </div>
+            <p id="menuName">Register</p>
+            <form id="registerForm">
+                <div id="inputs">
+                    <input type="text" id="userFirstName" placeholder="First Name" required>
+                    <input type="text" id="userLastName" placeholder="Last Name" required>
+                    <!-- Date of Birth? -->
+                    <input type="text" class="loginName" id="registerUsername" placeholder="Username" required>
+                    <input type="password" id="registerPassword" placeholder="Password" required>
+                    <p class="hidden error" id="errorMsgPassword">*Please enter a valid password.</p>
+                    <div id="passRequirements">
+                        <ul>
+                            <li>Password must be 8 characters or more</li>
+                            <li>Password must include at least one special character</li>
+                            <li>Password must include at least one number 0-9</li>
+                        </ul>
+                    </div>
+                    <input type="password" id="registerPasswordConfirm" placeholder="Confirm Password" required>
+                    <p class="hidden error" id="errorMsgPasswordConfirm">*Passwords do not match.</p>
+                    <button class="loginSubmit" id="register" type="submit">Register</button>
+                </div>
+            </form>
+        </div>
+        <div id="imageBox">
+            <img id="logoImage" src="assets/images/Logo1000.png" alt="Logo">
+        </div>
+
+    </div>
+</body>
+
+</html>

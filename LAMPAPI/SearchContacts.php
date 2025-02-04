@@ -1,7 +1,9 @@
 <?php
 
 	$inData = getRequestInfo();
-	
+
+	$userId = $inData["userId"];
+	$searchQuery = $inData["search"] . "%"; // Matches only values that START with the search term
 	$searchResults = "";
 	$searchCount = 0;
 
@@ -12,10 +14,22 @@
 	} 
 	else
 	{
-    //find contact that shares elements in FirstName stored in the database to prepare function
-		$stmt = $conn->prepare("SELECT Name FROM Contacts WHERE FirstName LIKE ? AND UserID=?");
-		$contactName = "%" . $inData["search"] . "%";
-		$stmt->bind_param("ss", $contactName, $inData["userId"]);
+    	//find contact that shares elements in FirstName stored in the database to prepare function
+		// - First Name, Last Name, Email → must start with the input (`LIKE 's%'`)
+		// - Phone → must contain the input (`LIKE '%123%'` for partial matches)
+		$stmt = $conn->prepare("
+			SELECT ID, FirstName, LastName, Phone, Email, Address 
+			FROM Contacts 
+			WHERE UserID = ? 
+			AND (
+				FirstName LIKE CONCAT(?, '%') 
+				OR LastName LIKE CONCAT(?, '%') 
+				OR Email LIKE CONCAT(?, '%') 
+				OR Phone LIKE CONCAT('%', ?, '%')
+			)
+		");
+	
+		$stmt->bind_param("sssss", $userId, $searchQuery, $searchQuery, $searchQuery, $searchQuery);
 		$stmt->execute();
 		
 		$result = $stmt->get_result();
@@ -27,7 +41,7 @@
 				$searchResults .= ",";
 			}
 			$searchCount++;
-			$searchResults .= '"' . $row["FirstName"] . '"';
+			$searchResults .= '{"firstName" : "' . $row["FirstName"] . '", "lastName" : "' . $row["LastName"] . '", "phone" : "' . $row["Phone"] . '", "email" : "' . $row["Email"] . '", "address" : "' . $row["Address"] . '", "contactId" : "' . $row["ID"] . '"}'; 
 		}
 		
 		if( $searchCount == 0 )
