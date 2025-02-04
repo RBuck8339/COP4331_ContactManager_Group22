@@ -96,6 +96,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Submit event listener
     addContactForm.addEventListener("submit", async (event) => {
+    	// Prevent form submission if any field is invalid
+		event.preventDefault();
+		
         // Contact form elements
         const firstNameInput = document.getElementById('firstName');
         const lastNameInput = document.getElementById('lastName');
@@ -133,10 +136,12 @@ document.addEventListener("DOMContentLoaded", function () {
             await getContacts();
 
         } 
-        else {
-            // Prevent form submission if any field is invalid
-            event.preventDefault();
-        }
+
+        // Reset the form
+		addContactForm.reset();
+
+		// Close the modal by adding the "hidden" class
+		addContactWindow.classList.add("hidden");
     });
 
     document.getElementById('editContactBtn').addEventListener('click', () => {
