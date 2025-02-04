@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const phoneError = document.getElementById('errorMsgPhone');
 
     // Email and phone regex
-    const emailRegex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+    const emailRegex = /^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$/;
     const phoneRegex = /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
 
     // Input validation function
@@ -193,7 +193,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 firstName: firstNameInput.value,
                 lastName: lastNameInput.value,
                 phone: phoneInput.value.replace(/\D/g, ""), // Remove dashes before sending,
-                email: emailInput.value,
+                email: emailInput.value.toLowerCase(), // Convert to lowercase,
                 address: addressInput.value,
                 userId: userId,
             };
@@ -376,7 +376,7 @@ function editContact(row){
             firstName: document.getElementById('editFirstName').value,
             lastName: document.getElementById('editLastName').value,
             phone: document.getElementById('editPhone').value.replace(/\D/g, ""), // Remove formatting before sending,
-            email: document.getElementById('editEmail').value,
+            email: document.getElementById('editEmail').value.toLowerCase(), // Convert to lowercase,
             address: document.getElementById('editAddress').value,
             userId: userId,
             contactId: contact_id
