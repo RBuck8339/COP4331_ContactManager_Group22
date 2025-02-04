@@ -6,11 +6,52 @@ const closeModalBtns = document.querySelectorAll('.closeModal');
 const addContactForm = document.getElementById('addContactForm');
 const editContactForm = document.getElementById('editContactForm');
 const searchBar = document.getElementById('searchBar');
-let show_edit_column = false
+
+let show_edit_column = false;
 
 // Prevents loading on local
 readCookie();
 console.log(`userId = ${userId}`);
+
+// Function to display contacts based on pagination
+function displayContacts() {
+    contacts_data.innerHTML = ''; // Clear the table
+
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    const paginatedContacts = contactsList.slice(start, end);
+
+    paginatedContacts.forEach(contact => {
+        const row = document.createElement('tr');
+
+        Object.keys(contact).forEach(key => {
+            const cell = document.createElement('td');
+
+            if (key === "contactId") {
+                cell.textContent = contact[key];
+                cell.classList.add('hiddenCell');  
+            } else {
+                cell.textContent = contact[key]; 
+            }
+
+            row.appendChild(cell);
+        });
+
+        if (show_edit_column) {
+            createEditCells(row);
+        }
+
+        contacts_data.appendChild(row);
+    });
+
+    updatePaginationButtons();
+}
+
+// Update pagination button visibility
+function updatePaginationButtons() {
+    prevPageBtn.style.display = currentPage > 1 ? "inline-block" : "none";
+    nextPageBtn.style.display = (currentPage * rowsPerPage) < contactsList.length ? "inline-block" : "none";
+}
 
 // Each of the below changes the current screen based on button press
 document.getElementById('settingsBtn').addEventListener('click', (e) => {
@@ -205,8 +246,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // Limit to 50 per page
+let currentPage = 1;
+const rowsPerPage = 40;
+let contactsList = []; // Stores all contacts
+
 // Get all contacts from the php endpoint
-async function getContacts(searchData = {'search': ''}){  // Probably need to have this detect null input
+// Fetch contacts from API and update pagination
+async function getContacts(searchData = { 'search': '' }) {
     searchData.userId = userId;
     console.log(searchData.userId);
 
@@ -214,40 +260,32 @@ async function getContacts(searchData = {'search': ''}){  // Probably need to ha
         endpoint: 'SearchContacts.php',
         data: searchData,
         method_type: 'POST'
-    });  // Contacts to add to the table
-
-    if(!contacts) contacts = [];  // No contacts to display
-
-
-    contacts_data.innerHTML = '';  // Clear out the table before adding
-
-    contacts.forEach(contact => {
-        const row = document.createElement('tr');
-
-        Object.keys(contact).forEach(key => {
-            const cell = document.createElement('td');
-
-            if(key === "contactId") {
-                // Set text content for string fields
-                cell.textContent = contact[key];
-                cell.classList.add('hiddenCell');  // If we are hiding the column (false by default)
-            }
-            // We keep the id cell hidden but available for reference
-            else{
-                cell.textContent = contact[key]; 
-            }
-
-            row.appendChild(cell);
-        });
-
-        // Since we need to create the column
-        if (show_edit_column) {
-            createEditCells(row);
-        }
-
-        contacts_data.appendChild(row);
     });
+
+    contactsList = contacts || [];  
+    currentPage = 1; // Reset to first page
+    displayContacts();
 }
+
+// Event Listeners for Pagination
+nextPageBtn.addEventListener('click', () => {
+    if ((currentPage * rowsPerPage) < contactsList.length) {
+        currentPage++;
+        displayContacts();
+    }
+});
+
+prevPageBtn.addEventListener('click', () => {
+    if (currentPage > 1) {
+        currentPage--;
+        displayContacts();
+    }
+});
+
+// Call getContacts on page load
+document.addEventListener("DOMContentLoaded", function () {
+    getContacts();
+});
 
 
 function createEditCells(row){
