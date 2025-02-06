@@ -429,16 +429,18 @@ function editContact(row){
 
 // Delete contact function
 async function deleteContact(row) {
-    // Ensure correct cell index for contactId
-    let contactIdCell = row.querySelector('.hiddenCell'); // Ensure it targets the correct cell with contactId
+    let contactId;
 
-    if (!contactIdCell) {
-        console.error("Contact ID cell not found in row.");
-        alert("Error: Contact ID cell not found.");
-        return;
+    if (typeof row === "object" && row.querySelector) {
+        // Case where row is a DOM element (expected behavior)
+        let contactIdCell = row.querySelector('.hiddenCell');
+        if (contactIdCell) {
+            contactId = contactIdCell.textContent.trim();
+        }
+    } else {
+        // Case where row is mistakenly passed as a string or number
+        contactId = row;
     }
-
-    let contactId = contactIdCell.textContent.trim();
 
     if (!contactId || isNaN(contactId)) {
         console.error("Invalid contactId:", contactId);
@@ -448,7 +450,7 @@ async function deleteContact(row) {
 
     const deleteData = { contactId: parseInt(contactId, 10) }; // Ensure it's an integer
 
-    console.log("Sending delete request with:", deleteData); // Debugging
+    console.log("Sending delete request with:", deleteData);
 
     const response = await sendRequest({
         endpoint: 'DeleteContact.php',
@@ -456,29 +458,17 @@ async function deleteContact(row) {
         method_type: 'POST'
     });
 
-    console.log("Delete Contact Response:", response); // Debugging
+    console.log("Delete Contact Response:", response);
 
-    if (!response) {
-        console.error("No response received from the server.");
-        alert("Error deleting contact: No response from server.");
-        return;
-    }
-
-    if (response.error) {
-        console.error("Error deleting contact:", response.error);
-        alert("Error deleting contact: " + response.error);
-        return;
-    }
-
-    if (response.message) {
-        console.log("Contact deleted successfully:", response.message);
-        alert(response.message);
-        await getContacts(); // Refresh contact list
+    if (!response || response.error) {
+        console.error("Error deleting contact:", response ? response.error : "No response received");
+        alert("Error deleting contact: " + (response?.error || "Unknown error"));
     } else {
-        console.error("Unexpected response format:", response);
-        alert("Unexpected response format received.");
+        console.log("Contact deleted successfully:", response);
+        await getContacts();
     }
 }
+
 
 
 
