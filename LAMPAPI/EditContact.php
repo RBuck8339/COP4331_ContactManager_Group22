@@ -1,6 +1,13 @@
 <?php
 $inData = getRequestInfo();
 
+if (empty($inData)) {
+    returnWithError("No data received in request.");
+    exit();
+}
+
+error_log("Received data: " . json_encode($inData)); // Debugging
+
 $firstName = $inData["firstName"];
 $lastName = $inData["lastName"];
 $phone = $inData["phone"];
@@ -9,35 +16,36 @@ $address = $inData["address"];
 $contactId = $inData["contactId"];
 $userId = $inData["userId"];
 
-// Connect to database, handle error if fails
+// Connect to database
 $conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "contact_manager");
 
 if ($conn->connect_error) {
     returnWithError($conn->connect_error);
-} else {
-    // Update contact details in the database
-    $stmt = $conn->prepare("UPDATE Contacts 
-                            SET FirstName=?, LastName=?, Phone=?, Email=?, Address=?
-                            WHERE ID=? AND UserID=?");
-    $stmt->bind_param("ssssssi", 
-        $firstName, 
-        $lastName, 
-        $phone, 
-        $email, 
-        $address, 
-        $contactId, 
-        $userId
-    );
-
-    if ($stmt->execute()) {
-        returnWithSuccess();
-    } else {
-        returnWithError("Error updating contact.");
-    }
-
-    $stmt->close();
-    $conn->close();
+    exit();
 }
+
+// **FIX: Define SQL Query**
+$sql = "UPDATE Contacts 
+        SET FirstName=?, LastName=?, Phone=?, Email=?, Address=?
+        WHERE ID=? AND UserID=?";
+$stmt = $conn->prepare($sql);
+
+if (!$stmt) {
+    returnWithError("SQL statement preparation failed: " . $conn->error);
+    exit();
+}
+
+$stmt->bind_param("ssssssi", $firstName, $lastName, $phone, $email, $address, $contactId, $userId);
+
+if (!$stmt->execute()) {
+    returnWithError("SQL execution failed: " . $stmt->error);
+    exit();
+}
+
+returnWithSuccess();
+
+$stmt->close();
+$conn->close();
 
 function getRequestInfo()
 {
@@ -48,6 +56,7 @@ function sendResultInfoAsJson($obj)
 {
     header('Content-type: application/json');
     echo $obj;
+    error_log("API Response: " . $obj); // Debugging
 }
 
 function returnWithError($err)
@@ -58,7 +67,7 @@ function returnWithError($err)
 
 function returnWithSuccess()
 {
-    $retValue = '{"success":"Contact updated successfully."}';
+    $retValue = '{"success": true, "message": "Contact updated successfully."}';
     sendResultInfoAsJson($retValue);
 }
 ?>

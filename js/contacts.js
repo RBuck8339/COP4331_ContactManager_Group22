@@ -38,8 +38,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 // Prevents loading on local
+console.log("Before readCookie(), userId:", typeof userId !== "undefined" ? userId : "Not defined");
 readCookie();
 console.log(`userId = ${userId}`);
+console.log("After readCookie(), userId:", typeof userId !== "undefined" ? userId : "Not defined");
+
+if (typeof userId === "undefined") {
+    console.error("userId is not defined.");
+}
 
 // Function to display contacts based on pagination
 function displayContacts() {
@@ -170,6 +176,11 @@ document.addEventListener("DOMContentLoaded", function () {
     	// Prevent form submission if any field is invalid
 		event.preventDefault();
 		
+		if (typeof userId === "undefined") {
+			console.error("userId is not defined. Cannot submit the form.");
+			return;
+		}
+		
         // Contact form elements
         const firstNameInput = document.getElementById('firstName');
         const lastNameInput = document.getElementById('lastName');
@@ -283,19 +294,33 @@ let contactsList = []; // Stores all contacts
 // Get all contacts from the php endpoint
 // Fetch contacts from API and update pagination
 async function getContacts(searchData = { 'search': '' }) {
-    searchData.userId = userId;
-    console.log(searchData.userId);
+    if (typeof userId === "undefined") {
+        console.error("userId is not defined.");
+        return;
+    }
 
-    let contacts = await sendRequest({
+    searchData.userId = userId;
+    console.log("Sending search request:", searchData);
+
+    let response = await sendRequest({
         endpoint: 'SearchContacts.php',
         data: searchData,
         method_type: 'POST'
     });
 
-    contactsList = contacts || [];  
-    currentPage = 1; // Reset to first page
+    console.log("Response from API:", response); // Debugging
+
+    if (response && response.results) {
+        contactsList = response.results; // Correctly assign the array
+    } else {
+        contactsList = []; // Ensure it's an array even if empty
+        console.error("Invalid data structure received:", response);
+    }
+
+    currentPage = 1; // Reset pagination
     displayContacts();
 }
+
 
 // Event Listeners for Pagination
 nextPageBtn.addEventListener('click', () => {
@@ -381,27 +406,49 @@ function editContact(row){
             userId: userId,
             contactId: contact_id
         };
-
+        console.log("Sending edit request with data:", editData);
 
         const response = await sendRequest({
             endpoint: 'EditContact.php',
             data: editData,
             method_type: 'POST'
         })
-
-        if (response && !response.error) {
-            await getContacts();  // Reload table
-            editContactWindow.classList.add('hidden');  // Close modal
-        } else {
-            alert("Error updating contact: " + (response.error || "Unknown error"));
-        }
+        
+        console.log("Edit Contact Response (RAW):", response);
+        if (!response || response.error) {
+			console.error("Error updating contact:", response ? response.error : "No response received");
+			alert("Error updating contact: " + (response?.error || "Unknown error"));
+		} else {
+			console.log("Contact updated successfully:", response);
+			await getContacts();
+			editContactWindow.classList.add('hidden');
+		}
     };
 }
 
 
 // Delete contact function
-async function deleteContact(contactId) {
-    const deleteData = { contactId };
+async function deleteContact(row) {
+    // Ensure correct cell index for contactId
+    let contactIdCell = row.querySelector('.hiddenCell'); // Ensure it targets the correct cell with contactId
+
+    if (!contactIdCell) {
+        console.error("Contact ID cell not found in row.");
+        alert("Error: Contact ID cell not found.");
+        return;
+    }
+
+    let contactId = contactIdCell.textContent.trim();
+
+    if (!contactId || isNaN(contactId)) {
+        console.error("Invalid contactId:", contactId);
+        alert("Error: Invalid contact ID.");
+        return;
+    }
+
+    const deleteData = { contactId: parseInt(contactId, 10) }; // Ensure it's an integer
+
+    console.log("Sending delete request with:", deleteData); // Debugging
 
     const response = await sendRequest({
         endpoint: 'DeleteContact.php',
@@ -409,44 +456,72 @@ async function deleteContact(contactId) {
         method_type: 'POST'
     });
 
-    if (response && !response.error) {
-        await getContacts();
+    console.log("Delete Contact Response:", response); // Debugging
+
+    if (!response) {
+        console.error("No response received from the server.");
+        alert("Error deleting contact: No response from server.");
+        return;
+    }
+
+    if (response.error) {
+        console.error("Error deleting contact:", response.error);
+        alert("Error deleting contact: " + response.error);
+        return;
+    }
+
+    if (response.message) {
+        console.log("Contact deleted successfully:", response.message);
+        alert(response.message);
+        await getContacts(); // Refresh contact list
     } else {
-        alert("Error deleting contact: " + (response.error || "Unknown error"));
+        console.error("Unexpected response format:", response);
+        alert("Unexpected response format received.");
     }
 }
 
 
 
 // Handles API calls
-async function sendRequest({ endpoint, data, method_type}) {
+async function sendRequest({ endpoint, data, method_type }) {
     try {
+        console.log(`Sending request to ${urlBase}/${endpoint} with data:`, data); // Debugging
+
         const response = await fetch(`${urlBase}/${endpoint}`, {
-            method: method_type,  
+            method: method_type,
             headers: { 'Content-Type': 'application/json' },
-            body: method_type === 'POST' ? JSON.stringify(data) : null,  // Only include body for POST
+            body: method_type === 'POST' ? JSON.stringify(data) : null,
         });
 
-        // Ensure response is okay before proceeding
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const parsedData = await response.json();  // Parse JSON directly
+        const parsedData = await response.json();
+        console.log(`Response from ${endpoint}:`, parsedData); // Debugging
 
-        // We don't care if the error is no records found
-        if (parsedData.error && parsedData.error !== 'No Records Found') {
-            console.error('Error receiving data from endpoint. Please try again later');
-            return null;
+        if (!parsedData) {
+            console.error("Empty response received from server.");
+            return { error: "Empty response from server" };
+        }
+
+        // Handle different response structures
+        if (parsedData.message) {
+            return parsedData; // Accept success responses
+        } 
+        else if (parsedData.results) {
+            return parsedData; // Accept search results
+        } 
+        else if (parsedData.error) {
+            console.error("Error received from API:", parsedData.error);
+            return { error: parsedData.error };
         } 
         else {
-            let return_data = parsedData.results;
-            return return_data;  // Update the contacts if we did not encounter an error
+            return { error: "No valid data returned" };
         }
     } 
     catch (error) {
         console.error("Fetch Error:", error);
-        alert("An error occurred. Please try again later.");
-        return null;
+        return { error: error.message };
     }
 }

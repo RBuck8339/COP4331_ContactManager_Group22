@@ -1,54 +1,76 @@
 <?php
 	$inData = getRequestInfo();
 
-	$contactid = $inData["contactid"]; // fetch userId from database
+	if (!isset($inData["contactId"]) || empty($inData["contactId"])) {
+		returnWithError("Invalid contact ID.");
+		exit();
+	}
+
+	$contactId = $inData["contactId"]; // Fetch contactId from request
+
+	// Handle case where contactId is an array instead of a single value
+	if (is_array($contactId)) {
+		error_log("contactId is an array, using first value: " . json_encode($contactId));
+		$contactId = reset($contactId); // Use first element in array
+	}
+
+	// Ensure it's an integer for database safety
+	$contactId = intval($contactId); 
 
     // Connect to database, handle error if fails
-	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331","contact_manager");
+	$conn = new mysqli("localhost", "TheBeast", "WeLoveCOP4331", "contact_manager");
+
 	if ($conn->connect_error) 
 	{
-		returnWithError( $conn->connect_error );
+		returnWithError($conn->connect_error);
+		exit();
 	} 
-	else
-	{   
-        // Delete user from database w/ their UserID
-		$stmt = $conn->prepare("DELETE FROM Contacts WHERE ID=?");
-		$stmt->bind_param("i", $contactid);
-		$stmt->execute();
 
-		// Confirm deletion attempt
-		if ($stmt->affected_rows > 0) {
-			// Deletion was successful
-			returnWithMessage("Contact deleted successfully.");
-		} else {
-			// No rows were affected (no contact found with that ID)
-			returnWithError("No contact found with ID: " . $contactId);
-		}
+	// Delete user from database w/ their contact ID
+	$stmt = $conn->prepare("DELETE FROM Contacts WHERE ID=?");
 
-		$stmt->close();
-		$conn->close(); 
+	if ($stmt === false) {
+		returnWithError("SQL statement preparation failed: " . $conn->error);
+		exit();
 	}
 
-	function getRequestInfo()
-	{
-		return json_decode(file_get_contents('php://input'), true);
+	$stmt->bind_param("i", $contactId);
+	$stmt->execute();
+
+	// Confirm deletion attempt
+	if ($stmt->affected_rows > 0) {
+		// Deletion was successful
+		returnWithMessage("Contact deleted successfully.");
+	} else {
+		// No rows were affected (no contact found with that ID)
+		returnWithError("No contact found with ID: " . $contactId);
 	}
 
-	function sendResultInfoAsJson($obj)
-	{
-		header('Content-type: application/json');
-		echo $obj;
-	}
+	$stmt->close();
+	$conn->close(); 
 
-	function returnWithError($err)
-	{
-		$retValue = '{"error":"' . $err . '"}';
-		sendResultInfoAsJson($retValue);
-	}
 
-	function returnWithMessage($msg)
-	{
-		$retValue = '{"message":"' . $msg . '","error":""}';
-		sendResultInfoAsJson($retValue);
-	}
+function getRequestInfo()
+{
+	return json_decode(file_get_contents('php://input'), true);
+}
+
+function sendResultInfoAsJson($obj)
+{
+	header('Content-type: application/json');
+	echo $obj;
+}
+
+function returnWithError($err)
+{
+	$retValue = json_encode(["error" => $err]);
+	sendResultInfoAsJson($retValue);
+	exit();
+}
+
+function returnWithMessage($msg)
+{
+    $retValue = '{"success":true, "message":"' . $msg . '", "error":""}';
+    sendResultInfoAsJson($retValue);
+}
 ?>
