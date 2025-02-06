@@ -288,7 +288,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Limit to 50 per page
 let currentPage = 1;
-const rowsPerPage = 40;
+const rowsPerPage = 30;
 let contactsList = []; // Stores all contacts
 
 // Get all contacts from the php endpoint
@@ -375,13 +375,16 @@ function createEditCells(row){
 function editContact(row){
     let cells = row.getElementsByTagName('td');
 
-    // Fill in current data
-    document.getElementById('editFirstName').value = cells[0].innerText;
-    document.getElementById('editLastName').value = cells[1].innerText;
-    document.getElementById('editPhone').value = cells[2].innerText;
-    document.getElementById('editEmail').value = cells[3].innerText;
-    document.getElementById('editAddress').value = cells[4].innerText;
-    let contact_id = cells[5].innerText;
+    console.log("Extracted cell values:", [...cells].map(cell => cell.innerText));
+
+    // Fix the order to match actual table structure
+    document.getElementById('editFirstName').value = cells[1].innerText;
+    document.getElementById('editLastName').value = cells[2].innerText;
+    document.getElementById('editPhone').value = cells[3].innerText;
+    document.getElementById('editEmail').value = cells[4].innerText;
+    document.getElementById('editAddress').value = cells[5].innerText;
+
+    let contact_id = cells[0].innerText;  // Contact ID was mistakenly in First Name
     //let user_id = getUserId();
 
     editContactWindow.classList.remove('hidden');
@@ -469,13 +472,10 @@ async function deleteContact(row) {
     }
 }
 
-
-
-
 // Handles API calls
 async function sendRequest({ endpoint, data, method_type }) {
     try {
-        console.log(`Sending request to ${urlBase}/${endpoint} with data:`, data); // Debugging
+        console.log(`Sending request to ${urlBase}/${endpoint} with data:`, data);
 
         const response = await fetch(`${urlBase}/${endpoint}`, {
             method: method_type,
@@ -488,27 +488,24 @@ async function sendRequest({ endpoint, data, method_type }) {
         }
 
         const parsedData = await response.json();
-        console.log(`Response from ${endpoint}:`, parsedData); // Debugging
+        console.log(`Response from ${endpoint}:`, parsedData);
 
-        if (!parsedData) {
-            console.error("Empty response received from server.");
-            return { error: "Empty response from server" };
+        if (!parsedData || typeof parsedData !== "object") {
+            console.error("Unexpected response format:", parsedData);
+            return { error: "Unexpected response format" };
         }
 
-        // Handle different response structures
-        if (parsedData.message) {
-            return parsedData; // Accept success responses
-        } 
-        else if (parsedData.results) {
-            return parsedData; // Accept search results
-        } 
-        else if (parsedData.error) {
-            console.error("Error received from API:", parsedData.error);
+        if (parsedData.error && parsedData.error !== "") {
+            console.error("API Error:", parsedData.error);
+            alert(parsedData.error);
             return { error: parsedData.error };
-        } 
-        else {
-            return { error: "No valid data returned" };
         }
+
+        if (parsedData.results) {
+            return parsedData; // Expected JSON format
+        }
+
+        return { error: "Unexpected response format" };
     } 
     catch (error) {
         console.error("Fetch Error:", error);
