@@ -18,7 +18,7 @@
         <img id="logoImg" src="assets/images/Logo750.png" alt="Logo">
         <p id="headerTitle">Coastal Contacts</p>
         <div id="navButtons">
-            <button type="button" id="settingsBtn" class="buttons">Settings</button>
+            <button type="button" id="themeBtn" class="buttons">Dark Mode</button>
             <button type="button" id="logoutBtn" class="buttons">Logout</button>
         </div>
     </div>
@@ -53,9 +53,9 @@
                 <!-- Dynamically add rows using JS + SQL -->
             </tbody>
             <div id="paginationControls">
-				<button id="prevPageBtn" class="pagination-btn" style="display: none;">Previous</button>
-				<button id="nextPageBtn" class="pagination-btn">Next</button>
-			</div>
+                <button id="prevPageBtn" class="pagination-btn" style="display: none;">Previous</button>
+                <button id="nextPageBtn" class="pagination-btn">Next</button>
+            </div>
         </table>
     </div>
 
@@ -89,18 +89,18 @@
             <form id="editContactForm">
                 <label for="editFirstName">First Name:</label>
                 <input type="text" id="editFirstName" name="firstName" required>
-                
+
                 <label for="editLastName">Last Name:</label>
                 <input type="text" id="editLastName" name="lastName" required>
-                
+
                 <label for="editPhone">Phone:</label>
                 <input type="text" id="editPhone" name="phoneNumber" required>
                 <p class="hidden" id="errorMsgPhone">*Please enter a valid phone number</p>
-                
+
                 <label for="editEmail">Email:</label>
                 <input type="text" id="editEmail" name="emailAddress" required>
                 <p class="hidden" id="errorMsgEmail">*Please enter a valid email address</p>
-                
+
                 <label for="editAddress">Address:</label>
                 <input type="text" id="editAddress" name="address" required>
 
