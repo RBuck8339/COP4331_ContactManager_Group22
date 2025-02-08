@@ -7,8 +7,10 @@ const addContactForm = document.getElementById('addContactForm');
 const editContactForm = document.getElementById('editContactForm');
 const searchBar = document.getElementById('searchBar');
 
-let show_edit_column = false;
+let show_edit_column = false
 
+
+// Formats the phone number inside the input field
 function formatPhoneNumber(phone) {
     phone = phone.replace(/\D/g, ""); // Remove non-numeric characters
     if (phone.length === 10) {
@@ -17,83 +19,46 @@ function formatPhoneNumber(phone) {
     return phone; // Return unformatted if not 10 digits
 }
 
+// Prevents loading on local
 document.addEventListener("DOMContentLoaded", function () {
-    const phoneInput = document.getElementById("phone");
-    const editPhoneInput = document.getElementById("editPhone");
+    // TODO MIGHT NEED THIS BACK
 
-    if (phoneInput) {
-        phoneInput.addEventListener("input", function () {
-            this.value = formatPhoneNumber(this.value);
-        });
-    }
+    fetch("LAMPAPI/checkSession.php", { 
+        method: "GET",
+        credentials: "same-origin" // Ensures cookies/session are sent
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Session check failed");
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log("User authenticated:", data);
+        userId = data.userId;
+        
+        // Ensure this code executes AFTER the session check and authentication
+        getContacts();
+    })
 
-    if (editPhoneInput) {
-        editPhoneInput.addEventListener("input", function () {
-            this.value = formatPhoneNumber(this.value);
-        });
-    }
 
+    if(userId == -1){
+        console.error("Not logged in. Redirecting...");
+        window.location.href = "login"; 
+    };
+    
     getContacts(); // Load contacts on page load
 });
 
 
-// Prevents loading on local
-console.log("Before readCookie(), userId:", typeof userId !== "undefined" ? userId : "Not defined");
-readCookie();
-console.log(`userId = ${userId}`);
-console.log("After readCookie(), userId:", typeof userId !== "undefined" ? userId : "Not defined");
-
-if (typeof userId === "undefined") {
-    console.error("userId is not defined.");
-}
-
-// Function to display contacts based on pagination
-function displayContacts() {
-    contacts_data.innerHTML = ''; // Clear the table
-
-    const start = (currentPage - 1) * rowsPerPage;
-    const end = start + rowsPerPage;
-    const paginatedContacts = contactsList.slice(start, end);
-
-    paginatedContacts.forEach(contact => {
-        const row = document.createElement('tr');
-
-        Object.keys(contact).forEach(key => {
-            const cell = document.createElement('td');
-
-            if (key === "contactId") {
-                cell.textContent = contact[key];
-                cell.classList.add('hiddenCell');  
-            } else if (key === "phone") {  
-                cell.textContent = formatPhoneNumber(contact[key]);  // Format phone numbers
-            }else {
-                cell.textContent = contact[key]; 
-            }
-
-            row.appendChild(cell);
-        });
-
-        if (show_edit_column) {
-            createEditCells(row);
-        }
-
-        contacts_data.appendChild(row);
-    });
-
-    updatePaginationButtons();
-}
-
-// Update pagination button visibility
-function updatePaginationButtons() {
-    prevPageBtn.style.display = currentPage > 1 ? "inline-block" : "none";
-    nextPageBtn.style.display = (currentPage * rowsPerPage) < contactsList.length ? "inline-block" : "none";
-}
-
+// TODO Change to Dark Mode Button
 // Each of the below changes the current screen based on button press
 document.getElementById('settingsBtn').addEventListener('click', (e) => {
     e.preventDefault();
     window.location.href = 'settings';
 });
+
+
 document.addEventListener("DOMContentLoaded", function () {
     const logoutBtn = document.getElementById("logoutBtn");
 
@@ -150,15 +115,30 @@ document.addEventListener("DOMContentLoaded", function () {
     const phoneError = document.getElementById('errorMsgPhone');
 
     // Email and phone regex
-    const emailRegex = /^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?$/;
+    const emailRegex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
     const phoneRegex = /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/;
 
     // Input validation function
-    function validateInput(input, regex, errorMsg) {
+    function validateInput(input, regex, errorMsg, type) {
+        // Validates phone number length
+        if (type === "phone") {
+            let value = input.value.replace(/\D/g, ""); // Remove non-numeric characters
+    
+            if (value.length !== 10) {
+                errorMsg.classList.remove("hidden"); // Show error if not 10 digits
+                input.classList.add("border-red");
+                return;
+            }
+    
+            // Format the number before validation
+            input.value = value.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+        }
+
         if (regex.test(input.value)) {
             errorMsg.classList.add('hidden'); // Hide error message if valid
             input.classList.remove('border-red'); // Remove error outline
-        } else {
+        } 
+        else {
             errorMsg.classList.remove('hidden'); // Show error message if invalid
             input.classList.add('border-red'); // Add error outline
         }
@@ -166,27 +146,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const phoneInput = document.getElementById('phone');
     const emailInput = document.getElementById('email');
+    const editPhoneInput = document.getElementById("editPhone");
+
+    if (phoneInput) {
+        phoneInput.addEventListener("input", function () {
+            this.value = formatPhoneNumber(this.value);
+        });
+    }
+
+    if (editPhoneInput) {
+        editPhoneInput.addEventListener("input", function () {
+            this.value = formatPhoneNumber(this.value);
+        });
+    }
 
     // Evaluate input after field is manipulated
-    emailInput.addEventListener('blur', () => validateInput(emailInput, emailRegex, emailError));
-    phoneInput.addEventListener('blur', () => validateInput(phoneInput, phoneRegex, phoneError));
+    emailInput.addEventListener('input', () => validateInput(emailInput, emailRegex, emailError, "email"));
+    phoneInput.addEventListener('input', () => validateInput(phoneInput, phoneRegex, phoneError, "phone"));
 
     // Submit event listener
     addContactForm.addEventListener("submit", async (event) => {
-    	// Prevent form submission if any field is invalid
-		event.preventDefault();
-		
-		if (typeof userId === "undefined") {
-			console.error("userId is not defined. Cannot submit the form.");
-			return;
-		}
-		
         // Contact form elements
         const firstNameInput = document.getElementById('firstName');
         const lastNameInput = document.getElementById('lastName');
         const addressInput = document.getElementById('address');
-        //const user_id = userId;
-
+    
 
         // Validate inputs in case the user clicks submit without making changes
         validateInput(emailInput, emailRegex, emailError);
@@ -203,8 +187,8 @@ document.addEventListener("DOMContentLoaded", function () {
             let addData = {
                 firstName: firstNameInput.value,
                 lastName: lastNameInput.value,
-                phone: phoneInput.value.replace(/\D/g, ""), // Remove dashes before sending,
-                email: emailInput.value.toLowerCase(), // Convert to lowercase,
+                phone: phoneInput.value.replace(/\D/g, ""),
+                email: emailInput.value.toLowerCase(),
                 address: addressInput.value,
                 userId: userId,
             };
@@ -217,13 +201,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
             await getContacts();
 
+            // Reset the form
+            addContactForm.reset();
+
+            // Close the modal by adding the "hidden" class
+            addContactWindow.classList.add("hidden");
         } 
-
-        // Reset the form
-		addContactForm.reset();
-
-		// Close the modal by adding the "hidden" class
-		addContactWindow.classList.add("hidden");
+        else {
+            // Prevent form submission if any field is invalid
+            event.preventDefault();
+        }
     });
 
     document.getElementById('editContactBtn').addEventListener('click', () => {
@@ -285,42 +272,55 @@ document.addEventListener("DOMContentLoaded", function () {
     })
 });
 
-
-// Limit to 50 per page
+// Table handling functions
 let currentPage = 1;
 const rowsPerPage = 30;
 let contactsList = []; // Stores all contacts
 
-// Get all contacts from the php endpoint
-// Fetch contacts from API and update pagination
-async function getContacts(searchData = { 'search': '' }) {
-    if (typeof userId === "undefined") {
-        console.error("userId is not defined.");
-        return;
-    }
+prevPageBtn = document.getElementById("prevPageBtn");
+nextPageBtn = document.getElementById("nextPageBtn");
 
-    searchData.userId = userId;
-    console.log("Sending search request:", searchData);
-
-    let response = await sendRequest({
-        endpoint: 'SearchContacts.php',
-        data: searchData,
-        method_type: 'POST'
-    });
-
-    console.log("Response from API:", response); // Debugging
-
-    if (response && response.results) {
-        contactsList = response.results; // Correctly assign the array
-    } else {
-        contactsList = []; // Ensure it's an array even if empty
-        console.error("Invalid data structure received:", response);
-    }
-
-    currentPage = 1; // Reset pagination
-    displayContacts();
+// Update pagination button visibility
+function updatePaginationButtons() {
+    prevPageBtn.style.display = currentPage > 1 ? "inline-block" : "none";
+    nextPageBtn.style.display = (currentPage * rowsPerPage) < contactsList.length ? "inline-block" : "none";
 }
 
+// Function to display contacts based on pagination
+function displayContacts() {
+    contacts_data.innerHTML = ''; // Clear the table
+
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+    const paginatedContacts = contactsList.slice(start, end);
+
+    paginatedContacts.forEach(contact => {
+        const row = document.createElement('tr');
+
+        Object.keys(contact).forEach(key => {
+            const cell = document.createElement('td');
+
+            if (key === "contactId") {
+                cell.textContent = contact[key];
+                cell.classList.add('hiddenCell');  
+            } else if (key === "phone") {  
+                cell.textContent = formatPhoneNumber(contact[key]);  // Format phone numbers
+            }else {
+                cell.textContent = contact[key]; 
+            }
+
+            row.appendChild(cell);
+        });
+
+        if (show_edit_column) {
+            createEditCells(row);
+        }
+
+        contacts_data.appendChild(row);
+    });
+
+    updatePaginationButtons();
+}
 
 // Event Listeners for Pagination
 nextPageBtn.addEventListener('click', () => {
@@ -337,10 +337,60 @@ prevPageBtn.addEventListener('click', () => {
     }
 });
 
-// Call getContacts on page load
-document.addEventListener("DOMContentLoaded", function () {
-    getContacts();
-});
+
+// Limit to 50 per page
+// Get all contacts from the php endpoint
+async function getContacts(searchData = {'search': ''}){  // Probably need to have this detect null input
+    if (typeof userId === "undefined") {
+        console.error("userId is not defined.");
+        return;
+    }
+
+    searchData.userId = userId;
+    console.log(searchData.userId);
+
+    console.log("Searching for: ", searchData);
+
+    let contacts = await sendRequest({
+        endpoint: 'SearchContacts.php',
+        data: searchData,
+        method_type: 'POST'
+    });  // Contacts to add to the table
+
+    if(!contacts) contacts = [];  // No contacts to display
+
+
+    contacts_data.innerHTML = '';  // Clear out the table before adding
+
+    contacts.forEach(contact => {
+        const row = document.createElement('tr');
+
+        Object.keys(contact).forEach(key => {
+            const cell = document.createElement('td');
+
+            if(key === "contactId") {
+                // Set text content for string fields
+                cell.textContent = contact[key];
+                cell.classList.add('hiddenCell');  // If we are hiding the column (false by default)
+            }
+            // We keep the id cell hidden but available for reference
+            else{
+                cell.textContent = contact[key]; 
+            }
+
+            row.appendChild(cell);
+        });
+
+        // Since we need to create the column
+        if (show_edit_column) {
+            createEditCells(row);
+        }
+
+        contacts_data.appendChild(row);
+    });
+
+    currentPage = 1; // Reset pagination
+}
 
 
 function createEditCells(row){
@@ -375,23 +425,19 @@ function createEditCells(row){
 function editContact(row){
     let cells = row.getElementsByTagName('td');
 
-    console.log("Extracted cell values:", [...cells].map(cell => cell.innerText));
-
-    // Fix the order to match actual table structure
+    // Fill in current data
     document.getElementById('editFirstName').value = cells[1].innerText;
     document.getElementById('editLastName').value = cells[2].innerText;
     document.getElementById('editPhone').value = cells[3].innerText;
     document.getElementById('editEmail').value = cells[4].innerText;
     document.getElementById('editAddress').value = cells[5].innerText;
-
-    let contact_id = cells[0].innerText;  // Contact ID was mistakenly in First Name
-    //let user_id = getUserId();
+    let contact_id = cells[0].innerText;
 
     editContactWindow.classList.remove('hidden');
 
     let delete_button = document.getElementById('deleteContactBtn');
     delete_button.onclick = async () => {
-        await deleteContact(contact_id);
+        await deleteContact(row);
         getContacts();  // Reload the entire table
         editContactWindow.classList.add('hidden');  // Close modal
     }
@@ -403,112 +449,81 @@ function editContact(row){
         let editData = {
             firstName: document.getElementById('editFirstName').value,
             lastName: document.getElementById('editLastName').value,
-            phone: document.getElementById('editPhone').value.replace(/\D/g, ""), // Remove formatting before sending,
-            email: document.getElementById('editEmail').value.toLowerCase(), // Convert to lowercase,
+            email: document.getElementById('editEmail').value.toLowerCase(),
+            phone: document.getElementById('editPhone').value.replace(/\D/g, ""),
             address: document.getElementById('editAddress').value,
             userId: userId,
             contactId: contact_id
         };
-        console.log("Sending edit request with data:", editData);
+
+        console.log("Edit sending: ", editData);
 
         const response = await sendRequest({
             endpoint: 'EditContact.php',
             data: editData,
             method_type: 'POST'
         })
-        
-        console.log("Edit Contact Response (RAW):", response);
-        if (!response || response.error) {
-			console.error("Error updating contact:", response ? response.error : "No response received");
-			alert("Error updating contact: " + (response?.error || "Unknown error"));
-		} else {
-			console.log("Contact updated successfully:", response);
-			await getContacts();
-			editContactWindow.classList.add('hidden');
-		}
-    };
+
+        await getContacts();  // Reload the entire table
+    }
 }
 
 
-// Delete contact function
-async function deleteContact(row) {
+async function deleteContact(row){
+    // User data
     let contactId;
 
-    if (typeof row === "object" && row.querySelector) {
-        // Case where row is a DOM element (expected behavior)
-        let contactIdCell = row.querySelector('.hiddenCell');
-        if (contactIdCell) {
-            contactId = contactIdCell.textContent.trim();
-        }
-    } else {
-        // Case where row is mistakenly passed as a string or number
-        contactId = row;
+    let contactIdCell = row.querySelector('.hiddenCell');
+    if (contactIdCell) {
+        contactId = contactIdCell.textContent.trim();
     }
 
-    if (!contactId || isNaN(contactId)) {
-        console.error("Invalid contactId:", contactId);
-        alert("Error: Invalid contact ID.");
-        return;
+    const deleteData = {
+        'contactId' : contactId
     }
 
-    const deleteData = { contactId: parseInt(contactId, 10) }; // Ensure it's an integer
-
-    console.log("Sending delete request with:", deleteData);
+    console.log("Delete sending: ", deleteData);
 
     const response = await sendRequest({
         endpoint: 'DeleteContact.php',
         data: deleteData,
         method_type: 'POST'
-    });
+    })
 
-    console.log("Delete Contact Response:", response);
-
-    if (!response || response.error) {
-        console.error("Error deleting contact:", response ? response.error : "No response received");
-        alert("Error deleting contact: " + (response?.error || "Unknown error"));
-    } else {
-        console.log("Contact deleted successfully:", response);
-        await getContacts();
-    }
+    await getContacts();  // Update the table
 }
 
-// Handles API calls
-async function sendRequest({ endpoint, data, method_type }) {
-    try {
-        console.log(`Sending request to ${urlBase}/${endpoint} with data:`, data);
 
+
+// Handles API calls
+async function sendRequest({ endpoint, data, method_type}) {
+    try {
         const response = await fetch(`${urlBase}/${endpoint}`, {
-            method: method_type,
+            method: method_type,  
             headers: { 'Content-Type': 'application/json' },
-            body: method_type === 'POST' ? JSON.stringify(data) : null,
+            body: method_type === 'POST' ? JSON.stringify(data) : null,  // Only include body for POST
         });
 
+        // Ensure response is okay before proceeding
         if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
-        const parsedData = await response.json();
-        console.log(`Response from ${endpoint}:`, parsedData);
+        const parsedData = await response.json();  // Parse JSON directly
 
-        if (!parsedData || typeof parsedData !== "object") {
-            console.error("Unexpected response format:", parsedData);
-            return { error: "Unexpected response format" };
+        // We don't care if the error is no records found
+        if (parsedData.error && parsedData.error !== 'No Records Found') {
+            console.error('Error receiving data from endpoint. Please try again later');
+            return null;
+        } 
+        else {
+            let return_data = parsedData.results;
+            return return_data;  // Update the contacts if we did not encounter an error
         }
-
-        if (parsedData.error && parsedData.error !== "") {
-            console.error("API Error:", parsedData.error);
-            alert(parsedData.error);
-            return { error: parsedData.error };
-        }
-
-        if (parsedData.results) {
-            return parsedData; // Expected JSON format
-        }
-
-        return { error: "Unexpected response format" };
     } 
     catch (error) {
         console.error("Fetch Error:", error);
-        return { error: error.message };
+        alert("An error occurred. Please try again later.");
+        return null;
     }
 }
