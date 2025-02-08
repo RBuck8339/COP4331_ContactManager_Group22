@@ -36,13 +36,14 @@ const passwordConfirm = document.getElementById('registerPasswordConfirm');
 function loginUser(){	
 
 	// Fetch login information
-	const login = document.getElementById('loginUsername').value;
-	const password = document.getElementById('loginPassword').value;
+	const login = document.getElementById('loginUsername');
+	const password = document.getElementById('loginPassword');
+	const loginError = document.getElementById('errorMsgLogin');
 
 	// Create json for login data
 	const data = { 
-		login: login,
-		password: password
+		login: login.value,
+		password: password.value
 	};
 
 	// Send POST request to the login endpoint
@@ -60,7 +61,9 @@ function loginUser(){
 	  try {
 		const data = JSON.parse(text);  // Try parsing the response as JSON
 		if (data.error) {
-		  alert("Incorrect username or password.");
+			login.classList.add('border-red');
+			password.classList.add('border-red');
+		  	loginError.classList.remove('hidden');
 		} else {
 			// If login is successful, save cookies
 			firstName = data.firstName;

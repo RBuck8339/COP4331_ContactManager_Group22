@@ -25,14 +25,15 @@
 
             <div id="welcomeMsg">
                 <h1 id="welcomeTitle">Coastal Contacts</h1>
-                <p id="welcomeDesc">Manage your contacts efficiently and securely</p>
+                <p id="welcomeDesc">Manage your contacts efficiently and securely.</p>
             </div>
-            <p id="menuName">Login</p>
             <form id="loginForm">
                 <div id="inputs">
                     <input type="text" class="loginName" id="loginUsername" placeholder="Username" required>
                     <input type="password" id="loginPassword" id="loginPassword" placeholder="Password" required>
                     <span id="loginResult"></span>
+                    <p class="error hidden" id="errorMsgLogin">Invalid username or password.</p>
+
                     <button class="loginSubmit" id="login" type="submit">Login</button>
                 </div>
             </form>
@@ -47,9 +48,8 @@
 
             <div id="welcomeMsg">
                 <h1 id="welcomeTitle">Coastal Contacts</h1>
-                <p id="welcomeDesc">Manage your contacts efficiently and securely</p>
+                <p id="welcomeDesc">Manage your contacts efficiently and securely.</p>
             </div>
-            <p id="menuName">Register</p>
             <form id="registerForm">
                 <div id="inputs">
                     <input type="text" id="userFirstName" placeholder="First Name" required>
@@ -57,7 +57,7 @@
                     <!-- Date of Birth? -->
                     <input type="text" class="loginName" id="registerUsername" placeholder="Username" required>
                     <input type="password" id="registerPassword" placeholder="Password" required>
-                    <p class="hidden error" id="errorMsgPassword">*Please enter a valid password.</p>
+                    <p class="hidden error" id="errorMsgPassword">Please enter a valid password.</p>
                     <div id="passRequirements">
                         <ul>
                             <li>Password must be 8 characters or more</li>
@@ -66,7 +66,7 @@
                         </ul>
                     </div>
                     <input type="password" id="registerPasswordConfirm" placeholder="Confirm Password" required>
-                    <p class="hidden error" id="errorMsgPasswordConfirm">*Passwords do not match.</p>
+                    <p class="hidden error" id="errorMsgPasswordConfirm">Passwords do not match.</p>
                     <button class="loginSubmit" id="register" type="submit">Register</button>
                 </div>
             </form>
@@ -77,5 +77,4 @@
 
     </div>
 </body>
-
 </html>
