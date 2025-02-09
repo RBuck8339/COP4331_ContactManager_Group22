@@ -25,6 +25,11 @@
 
     <div id="contacts">
         <div id="utils">
+            <div id="paginationControls">
+                <button id="prevPageBtn" class="pagination-btn" style="display: none;">Previous</button>
+                <button id="nextPageBtn" class="pagination-btn">Next</button>
+            </div>
+
             <button id="addContactBtn">
                 <img id="btnImg" src="assets/images/add_user.png" alt ="Add User" class="button-icon">
             </button>
@@ -52,11 +57,6 @@
             <tbody id="contactsData">
                 <!-- Dynamically add rows using JS + SQL -->
             </tbody>
-
-            <div id="paginationControls">
-                <button id="prevPageBtn" class="pagination-btn" style="display: none;">Previous</button>
-                <button id="nextPageBtn" class="pagination-btn">Next</button>
-            </div>
         </table>
     </div>
 
@@ -71,10 +71,10 @@
                 <input type="text" id="lastName" name="lastName" required>
                 <label for="email">Email:</label>
                 <input type="text" id="email" name="emailAddress" required>
-                <p class="hidden" id="errorMsgEmail">*Please enter a valid email address</p>
+                <p class="hidden error" id="errorMsgEmail">Please enter a valid email address.</p>
                 <label for="Phone">Phone:</label>
                 <input type="text" id="phone" name="phoneNumber" required>
-                <p class="hidden" id="errorMsgPhone">*Please enter a valid phone number</p>
+                <p class="hidden error" id="errorMsgPhone">Please enter a valid phone number.</p>
                 <label for="Address">Address:</label>
                 <input type="text" id="address" name="address" required>
 
@@ -96,11 +96,11 @@
 
                 <label for="editPhone">Phone:</label>
                 <input type="text" id="editPhone" name="phoneNumber" required>
-                <p class="hidden" id="errorMsgPhone">Please enter a valid phone number.</p>
+                <p class="hidden error" id="errorMsgPhone">Please enter a valid phone number.</p>
 
                 <label for="editEmail">Email:</label>
                 <input type="text" id="editEmail" name="emailAddress" required>
-                <p class="hidden" id="errorMsgEmail">Please enter a valid email address.</p>
+                <p class="hidden error" id="errorMsgEmail">Please enter a valid email address.</p>
 
                 <label for="editAddress">Address:</label>
                 <input type="text" id="editAddress" name="address" required>
