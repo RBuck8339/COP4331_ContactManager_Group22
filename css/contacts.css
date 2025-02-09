@@ -53,7 +53,9 @@ body {
     border: none;
     cursor: pointer;
     color: var(--header-text-color);
+    font-size: 20px;
     font-weight: bold;
+    text-decoration: underline;
     transition: background-color 0.25s ease;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
@@ -96,7 +98,7 @@ body {
     margin-right: 1%;
     margin-left: none;
     cursor: pointer;
-    color: var(--text-color);
+    color: var(--button-text-color);
 }
 
 #btnImg {

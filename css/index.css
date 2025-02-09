@@ -8,9 +8,6 @@ body {
     box-sizing: border-box;
 }
 
-
-/* Style 2 */
-
 :root {
     --background-color: #F0F7F4;
     --box-color: #1E3A5F;
@@ -23,10 +20,10 @@ body {
     --table-header: #0096C7;
     --table-row-1: #90E0EF;
     --table-row-2: #CAF0F8;
-    --button-color: #0077B6;
+    --button-color: #0b86c8;
     --button-alt-color: #357aBD;
     --button-hover-color: #005F99;
-    --button-text-color: #FFFFFF;
+    --button-text-color: #000000;
 }
 
 
