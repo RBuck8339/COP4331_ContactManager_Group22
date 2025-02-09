@@ -58,9 +58,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // TODO Change to Dark Mode Button
 // Each of the below changes the current screen based on button press
-document.getElementById('settingsBtn').addEventListener('click', (e) => {
+document.getElementById('themeBtn').addEventListener('click', (e) => {
     e.preventDefault();
-    window.location.href = 'settings';
+    
 });
 
 
