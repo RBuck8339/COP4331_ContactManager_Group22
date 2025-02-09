@@ -39,7 +39,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return response.json();
     })
     .then(data => {
-        console.log("User authenticated:", data);
         userId = data.userId;
         
         // Ensure this code executes AFTER the session check and authentication
@@ -56,11 +55,34 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-// TODO Change to Dark Mode Button
-// Each of the below changes the current screen based on button press
-document.getElementById('themeBtn').addEventListener('click', (e) => {
-    e.preventDefault();
-    
+// This will change the theme based on user input
+const toggleThemeBtn = document.getElementById('themeBtn');
+const docBody = document.body;
+
+function updateThemeText(){
+    if(docBody.classList.contains("darkMode")){
+        toggleThemeBtn.textContent = 'Light Mode';
+    }
+    else{
+        toggleThemeBtn.textContent = 'Dark Mode';
+    }
+}
+
+if (localStorage.getItem("darkMode") === "enabled") {
+    docBody.classList.add("darkMode");
+}
+
+toggleThemeBtn.addEventListener('click', (e) => {
+    console.log("Changing theme");
+    docBody.classList.toggle("darkMode");
+
+    // Save preference for page reload
+    if (docBody.classList.contains("darkMode")) {
+        localStorage.setItem("darkMode", "enabled");
+    } else {
+        localStorage.setItem("darkMode", "disabled");
+    }
+    updateThemeText();
 });
 
 
@@ -346,11 +368,7 @@ async function getContacts(searchData = {'search': ''}){  // Probably need to ha
         return;
     }
 
-    searchData.userId = userId;
-    console.log(searchData.userId);
-
-    console.log("Searching for: ", searchData);
-
+    searchData.userId = userId; // Set id to search with
     let contacts = await sendRequest({
         endpoint: 'SearchContacts.php',
         data: searchData,
@@ -456,8 +474,6 @@ function editContact(row){
             contactId: contact_id
         };
 
-        console.log("Edit sending: ", editData);
-
         const response = await sendRequest({
             endpoint: 'EditContact.php',
             data: editData,
@@ -481,8 +497,6 @@ async function deleteContact(row){
     const deleteData = {
         'contactId' : contactId
     }
-
-    console.log("Delete sending: ", deleteData);
 
     const response = await sendRequest({
         endpoint: 'DeleteContact.php',

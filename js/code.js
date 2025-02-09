@@ -5,18 +5,26 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     // Register user upon clicking register
     const registerForm =  document.getElementById('registerForm');
-    registerForm.addEventListener("submit", (event) => {
-	    checkRegister(event);
-    });
+    if(registerForm){
+		registerForm.addEventListener("submit", (event) => {
+			checkRegister(event);
+		});
+	}
 
     const loginForm = document.getElementById('loginForm');
-    loginForm.addEventListener("submit", (event) => {
-        loginUser();
-        event.preventDefault();
-    });
+	if(loginForm){
+		loginForm.addEventListener("submit", (event) => {
+			loginUser();
+			event.preventDefault();
+		});
+	}
 
-    password.addEventListener('blur', () => validatePassword(password, passwordRegex, passwordError));
-    passwordConfirm.addEventListener('blur', () => confirmPassword(passwordConfirm, password.value, passwordConfirm.value, passwordConfirmErorr));
+	if(password){
+		password.addEventListener('blur', () => validatePassword(password, passwordRegex, passwordError));
+	}
+    if(passwordConfirm){
+		passwordConfirm.addEventListener('blur', () => confirmPassword(passwordConfirm, password.value, passwordConfirm.value, passwordConfirmErorr));
+	}
 });
 
 const urlBase = 'http://www.contactsbycoastal.com/LAMPAPI';
