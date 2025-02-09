@@ -7,6 +7,11 @@ const addContactForm = document.getElementById('addContactForm');
 const editContactForm = document.getElementById('editContactForm');
 const searchBar = document.getElementById('searchBar');
 
+// Table handling functions
+let currentPage = 1;
+const rowsPerPage = 30;
+let contactsList = []; // Stores all contacts
+
 let show_edit_column = false
 
 
@@ -271,11 +276,6 @@ document.addEventListener("DOMContentLoaded", function () {
         getContacts(searchData);
     })
 });
-
-// Table handling functions
-let currentPage = 1;
-const rowsPerPage = 30;
-let contactsList = []; // Stores all contacts
 
 prevPageBtn = document.getElementById("prevPageBtn");
 nextPageBtn = document.getElementById("nextPageBtn");
