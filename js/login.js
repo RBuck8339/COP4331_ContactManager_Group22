@@ -1,4 +1,3 @@
-const loginBox = document.querySelector('.loginBox');
 const loginMenu = document.getElementById('loginMenu');
 const registerMenu = document.getElementById('registerMenu');
 
@@ -10,8 +9,6 @@ const toggleScreen = (showScreenLogin) => {
         registerMenu.classList.add('hidden');
         document.getElementById('toLoginBtn').classList.add('activePage'); // Correct button ID
         document.getElementById('toRegisterBtn').classList.remove('activePage');
-        loginBox.style.height = '57%';
-        loginBox.style.width = '31%';
     }
     else {
         loginMenu.classList.add('hidden');

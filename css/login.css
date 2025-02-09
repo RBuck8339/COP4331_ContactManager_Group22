@@ -20,12 +20,20 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 32%;
-    height: 80%;
     margin: auto;
     background-color: var(--box-color);
     box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
     border-radius: 17px;
+}
+
+#loginMenu {
+    height: 55%;
+    width: 31%;
+}
+
+#registerMenu {
+    height: 81%;
+    width: 32%;
 }
 
 .hidden {
