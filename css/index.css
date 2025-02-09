@@ -4,8 +4,20 @@ body {
     margin: 0;
     padding: 0;
     background-color: var(--background-color);
-    height: 100%;
     box-sizing: border-box;
+    background-attachment: fixed;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#root {
+    flex-grow: 1;
+    background-color: var(--background-color);
+    width: 100%;
 }
 
 :root {
