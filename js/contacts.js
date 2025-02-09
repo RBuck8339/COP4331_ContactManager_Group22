@@ -73,7 +73,6 @@ if (localStorage.getItem("darkMode") === "enabled") {
 }
 
 toggleThemeBtn.addEventListener('click', (e) => {
-    console.log("Changing theme");
     docBody.classList.toggle("darkMode");
 
     // Save preference for page reload
@@ -481,6 +480,7 @@ function editContact(row){
         })
 
         await getContacts();  // Reload the entire table
+        editContactWindow.classList.add('hidden');
     }
 }
 

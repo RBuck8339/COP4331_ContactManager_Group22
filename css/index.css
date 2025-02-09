@@ -16,7 +16,7 @@ body {
     --box-color: #1E3A5F;
     --text-color: #FFFFFF;
     --table-text-color: #2B3A42;
-    --header-text-color: #ffffff;
+    --header-text-color: #AEEEEE;
     --table-header-text-color: #002627;
     --accent-color: #0096C7;
     --border-color: #48CAE4;
@@ -24,7 +24,7 @@ body {
     --table-row-1: #90E0EF;
     --table-row-2: #CAF0F8;
     --button-color: #0077B6;
-    --button-alt-color: #00B4D8;
+    --button-alt-color: #357aBD;
     --button-hover-color: #005F99;
     --button-text-color: #FFFFFF;
 }

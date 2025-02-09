@@ -96,6 +96,7 @@ body {
     margin-right: 1%;
     margin-left: none;
     cursor: pointer;
+    color: var(--text-color);
 }
 
 #btnImg {
@@ -178,6 +179,10 @@ body {
     border-left: 1px solid rgb(135, 135, 135);
 }
 
+#contactsTable td:first-child {
+    border-left: none;
+}
+
 #editButtons {
     display: flex;
     justify-content: center;
@@ -246,7 +251,6 @@ body {
     font-weight: bold;
     color: var(--header-text-color);
     cursor: pointer;
-    
 }
 
 .closeModal:hover {
@@ -271,7 +275,6 @@ form p {
     margin-top: 15px;
     text-align: left;
     color: var(--text-color);
-
 }
 
 form p {

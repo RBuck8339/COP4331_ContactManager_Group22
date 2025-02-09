@@ -1,4 +1,8 @@
-*, *::before, *::after {box-sizing: border-box;}
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
 
 html,
 body {
@@ -54,8 +58,9 @@ body {
     background-color: var(--button-color);
     border-radius: 4px;
     cursor: pointer;
-    font-size: 16px;
-    color: var(--button-text-color);
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--text-color);
     transition: background-color 0.3s ease;
 }
 
@@ -69,7 +74,7 @@ body {
 }
 
 #welcomeMsg {
-    text-align: center; 
+    text-align: center;
 }
 
 #welcomeTitle {
@@ -165,7 +170,6 @@ input {
     height: 100%;
     background: transparent;
 }
-
 
 .error {
     margin: 0px;
